@@ -50,7 +50,7 @@ public enum TeslaError: Error, Equatable, LocalizedError {
         case .notReachable:
             return "notReachableError"
         case .dataSerializationError(let msg):
-            return "dataSerializationError".localized() + "\n" + "\(msg)"
+            return "dataSerializationError" + "\n" + "\(msg)"
         case .customError(let msg):
             return msg
         }
