@@ -51,26 +51,30 @@ class AuthHelper {
     
     // MARK: - Step 3 - 交换调用以生成令牌 转换为 bearer token
     func bearerTokenParameter(_ code: String) -> [String: String] {
-        ["grant_type": "authorization_code",
-         "client_id": oAuthWebClientID,
-         "client_secret": oAuthWebClientSecret,
-         "code": code,
-         "redirect_uri": oAuthOneRedirectURI,
-         "scope": oAuthScope,
-         "audience": oAuthAudience]
+        [
+            "grant_type": "authorization_code",
+            "client_id": oAuthWebClientID,
+            "client_secret": oAuthWebClientSecret,
+            "code": code,
+            "redirect_uri": oAuthOneRedirectURI,
+            "scope": oAuthScope,
+            "audience": oAuthAudience
+        ]
     }
     
     // MARK: - Step 5 - Refresh Token 刷新令牌生成新的令牌
     func refreshParameter(_ token: String) -> [String: String] {
-        ["grant_type": "refresh_token",
-         "client_id": oAuthWebClientID,
-         "refresh_token": token]
+        [
+            "grant_type": "refresh_token",
+            "client_id": oAuthWebClientID,
+            "refresh_token": token
+        ]
     }
     
-    func parseHtml(_ data: Data?, withCredential: Bool) throws -> [String: String] {
-        guard let data else { return [:] }
-        
-        var codeParameter = [String: String]()
+//    func parseHtml(_ data: Data?, withCredential: Bool) throws -> [String: String] {
+//        guard let data else { return [:] }
+//        
+//        var codeParameter = [String: String]()
 //        if let document = try? HTMLDocument(data: data) {
 //            print("----------Parse Html hidden inputs-----------")
 //            for input in document.xpath("//input") {
@@ -83,29 +87,32 @@ class AuthHelper {
 //            }
 //        }
         
-        if let _ = codeParameter["sec_chlge_forward_wrap"] {
-            throw TeslaError.recaptchaError
-        }
-        
-        var hiddenPara: [String: String] = [:]
-        hiddenPara["_csrf"] = codeParameter["_csrf"]
-        hiddenPara["_phase"] = codeParameter["_phase"]
-        hiddenPara["transaction_id"] = codeParameter["transaction_id"]
-        hiddenPara["cancel"] = codeParameter["cancel"]
-        hiddenPara["identity"] = codeParameter["identity"] ?? email
-        if withCredential {
-            hiddenPara["privacy_consent"] = "1"
-            hiddenPara["credential"] = password
-        }
-        print("hiddenPara: \(hiddenPara.description)")
-        
-        return codeParameter
-    }
+//        if let _ = codeParameter["sec_chlge_forward_wrap"] {
+//            throw TeslaError.recaptchaError
+//        }
+//        
+//        var hiddenPara: [String: String] = [:]
+//        hiddenPara["_csrf"] = codeParameter["_csrf"]
+//        hiddenPara["_phase"] = codeParameter["_phase"]
+//        hiddenPara["transaction_id"] = codeParameter["transaction_id"]
+//        hiddenPara["cancel"] = codeParameter["cancel"]
+//        hiddenPara["identity"] = codeParameter["identity"] ?? email
+//        if withCredential {
+//            hiddenPara["privacy_consent"] = "1"
+//            hiddenPara["credential"] = password
+//        }
+//        print("hiddenPara: \(hiddenPara.description)")
+//        
+//        return codeParameter
+//    }
 }
 
 extension String {
     func parseLocationCode() -> String? {
-        let urlComponents = URLComponents(url: URL(string: self)!, resolvingAgainstBaseURL: true)
+        let urlComponents = URLComponents(
+            url: URL(string: self)!,
+            resolvingAgainstBaseURL: true
+        )
         if let queryItems = urlComponents?.queryItems {
             for queryItem in queryItems {
                 if queryItem.name == "code", let code = queryItem.value {
@@ -113,10 +120,9 @@ extension String {
                     return code
                 }
             }
-            print("====> Fail to fetch authorization code")
             return nil
         }else {
-            print("====> Fail to fetch authorization code")
+            debugPrint("====> Fail to fetch authorization code")
             return nil
         }
     }

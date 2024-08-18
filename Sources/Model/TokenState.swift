@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TokenState: Codable {
+public struct TokenState: Codable {
     let access_token: String?
     let expires_in: TimeInterval?
     let id_token: String? // Only for bearer token

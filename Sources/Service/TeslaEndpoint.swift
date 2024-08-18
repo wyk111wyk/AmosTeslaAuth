@@ -16,7 +16,7 @@ import CoreLocation
  唤醒限制       5个API请求/车辆/小时
  */
 
-enum AllStatesEndpoints: String {
+public enum AllStatesEndpoints: String {
     case chargeState = "charge_state"
     case climateState = "climate_state"
     case closuresState = "closures_state"
@@ -31,10 +31,10 @@ enum AllStatesEndpoints: String {
     public static var allWithLocation: [AllStatesEndpoints] = [.chargeState, .climateState, .closuresState, .locationData, .guiSettings, .vehicleConfig, .vehicleState]
 }
 
-enum UserRegion: String, Identifiable {
+public enum UserRegion: String, Identifiable {
     case china, us, europe
     
-    var id: String { self.rawValue }
+    public var id: String { self.rawValue }
     static var allCase: [Self] {
         [.china, .us, .europe]
     }
@@ -71,7 +71,7 @@ enum UserRegion: String, Identifiable {
     }
 }
 
-enum Endpoint {
+public enum Endpoint {
     // Auth
     case oAuth2Authorization
     case oAuth2AuthorizationPost

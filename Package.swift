@@ -23,6 +23,9 @@ let package = Package(
         .target(
             name: "AmosTeslaAuth",
             dependencies: ["Alamofire"],
-            path: "Sources")
+            path: "Sources",
+            resources: [
+                .process("Resources"),
+                .process("Localization")])
     ]
 )

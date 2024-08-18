@@ -9,8 +9,8 @@ import Foundation
 import Intents
 import SwiftUI
 
-struct CommandInfo {
-    enum ForceWake: String, CaseIterable {
+public struct CommandInfo {
+    public enum ForceWake: String, CaseIterable {
         case alwaysAsk = "Always ask",
              yes = "Yes",
              no = "No"
@@ -44,8 +44,8 @@ struct CommandInfo {
         }
     }
     
-    enum ControlVehiclePart: CaseIterable, Identifiable, Equatable, Hashable {
-        static var allCases: [CommandInfo.ControlVehiclePart] {
+    public enum ControlVehiclePart: CaseIterable, Identifiable, Equatable, Hashable {
+        public static var allCases: [CommandInfo.ControlVehiclePart] {
             [.alwaysAsk, .remoteStart, .lights, .horn, .doors, .frontTrunk, .rearTrunk, .windows, .chargeLimit, .chargePortDoor, climate, .wheelHeater, .defrost, .sentry]
         }
         
@@ -55,7 +55,7 @@ struct CommandInfo {
         case climate, setTemps(temps: Double = 20), wheelHeater, dogMode, campMode
         case sentry, defrost
         
-        var id: String { self.commandName() }
+        public var id: String { self.commandName() }
         
         func commandName() -> String {
             switch self {
@@ -133,19 +133,19 @@ struct CommandInfo {
             }
         }
         
-        static func == (lhs: CommandInfo.ControlVehiclePart, rhs: CommandInfo.ControlVehiclePart) -> Bool {
+        public static func == (lhs: CommandInfo.ControlVehiclePart, rhs: CommandInfo.ControlVehiclePart) -> Bool {
             lhs.commandName() == rhs.commandName()
         }
     }
     
-    enum ControlVehicleWay: CaseIterable, Equatable, Hashable {
-        static var allCases: [CommandInfo.ControlVehicleWay] = [.alwaysAsk, .open, .close]
+    public enum ControlVehicleWay: CaseIterable, Equatable, Hashable {
+        public static var allCases: [CommandInfo.ControlVehicleWay] = [.alwaysAsk, .open, .close]
         static var allChargePhases: [CommandInfo.ControlVehicleWay] {
             CommandInfo.ChargeLimitPhase.allCases.map {
                 CommandInfo.ControlVehicleWay.setPercent(limit: $0.limit())
             }
         }
-        static func == (lhs: CommandInfo.ControlVehicleWay, rhs: CommandInfo.ControlVehicleWay) -> Bool {
+        public static func == (lhs: CommandInfo.ControlVehicleWay, rhs: CommandInfo.ControlVehicleWay) -> Bool {
             lhs.title() == rhs.title() &&
                 lhs.percent() == lhs.percent()
         }
@@ -153,7 +153,7 @@ struct CommandInfo {
             lhs.title() != rhs.title() ||
                 lhs.percent() != lhs.percent()
         }
-        func hash(into hasher: inout Hasher) {
+        public func hash(into hasher: inout Hasher) {
             hasher.combine(value)
         }
         
@@ -247,10 +247,10 @@ struct CommandInfo {
     }
     
     /// 设置充电比例的预置选项
-    enum ChargeLimitPhase: String, CaseIterable, Identifiable {
+    public enum ChargeLimitPhase: String, CaseIterable, Identifiable {
         case fullCharge, longRange, dailyUsage, maintenance
         
-        var id: String { self.rawValue }
+        public var id: String { self.rawValue }
         
         static func phaseFromLimit(_ limit: Int) -> CommandInfo.ChargeLimitPhase {
             if limit == 100 {
@@ -331,7 +331,7 @@ struct CommandInfo {
     }
     
     /// 生成可操控部位的本地化名称
-    static func genernatePart(part: CommandInfo.ControlVehiclePart) -> String {
+    public static func genernatePart(part: CommandInfo.ControlVehiclePart) -> String {
         var partText = String.init()
         
         switch part {
@@ -377,7 +377,7 @@ struct CommandInfo {
     }
     
     /// 通过部位生成动作的本地化名称: 打开
-    static func genernateWay(part: CommandInfo.ControlVehiclePart,
+    public static func genernateWay(part: CommandInfo.ControlVehiclePart,
                              way: CommandInfo.ControlVehicleWay) -> String {
         var wayText = String.init()
         
@@ -454,7 +454,7 @@ struct CommandInfo {
         return wayText
     }
     
-    static func genernateSuggestion(part: CommandInfo.ControlVehiclePart,
+    public static func genernateSuggestion(part: CommandInfo.ControlVehiclePart,
                              way: CommandInfo.ControlVehicleWay) -> String {
         var partText = CommandInfo.genernatePart(part: part)
         if part == .alwaysAsk {
