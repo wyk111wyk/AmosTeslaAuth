@@ -40,8 +40,9 @@ public class AuthManager {
     
     /// 是否 Token 已过期
     func hasExpired() -> Bool {
-        debugPrint("Token 过期的时间：\(Date(timeIntervalSince1970: expiredTS))")
-        return expiredTS > Date().timeIntervalSince1970
+        debugPrint("Token 过期TS：\(expiredTS)")
+        debugPrint("当前 TS：\(Date().timeIntervalSince1970)")
+        return expiredTS < Date().timeIntervalSince1970
     }
     
     /// 将 code 转换为 Token
@@ -72,6 +73,7 @@ public class AuthManager {
         refreshToken: String,
         expiredTS: Double
     ) {
+        debugPrint("缓存 Token 和过期时间：\(expiredTS)")
         self.savedAccessToken = accessToken
         self.savedrefreshToken = refreshToken
         self.expiredTS = expiredTS
@@ -155,6 +157,7 @@ extension AuthManager {
                                     expiredTS: expiredDate.timeIntervalSince1970
                                 )
                                 debugPrint("成功获取 access token")
+                                debugPrint("过期时间：\(String(describing: result.expires_in))")
                                 contionuation.resume(returning: access_token)
                             }else {
                                 contionuation.resume(throwing: TeslaError.authenticationFailed)
@@ -196,7 +199,7 @@ extension AuthManager {
                             }else if let access_token = result.access_token,
                                      let refresh_token = result.refresh_token {
                                 debugPrint("刷新 AccessToken 成功！")
-                                debugPrint("AccessToken 将在\(result.expires_in ?? 0)秒后失效")
+                                debugPrint("过期时间：\(String(describing: result.expires_in))")
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
                                 self.cacheToken(
                                     accessToken: access_token,

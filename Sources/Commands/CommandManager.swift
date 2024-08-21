@@ -56,9 +56,12 @@ public class CommandManager {
     }
     
     /// 获取单车的详细信息
-    public func fetchVehicleData(_ vehicle_id: String,
-                          carName: String,
-                          inService: Bool?) async throws -> TeslaStore? {
+    /// 车辆必须在唤醒的状态才能获取详细信息
+    public func fetchVehicleData(
+        _ vehicle_id: String,
+        carName: String,
+        inService: Bool? = false
+    ) async throws -> TeslaStore? {
         let headers = try await requestToken("Fetch Vehicle Data")
         let endpoint = Endpoint.allStates(vehicleID: vehicle_id)
         return try await withCheckedThrowingContinuation { continuation in
@@ -82,6 +85,8 @@ public class CommandManager {
                             continuation.resume(with: .success(modelData))
                         }else if let error = response.error {
                             continuation.resume(with: .failure(error))
+                        }else if let errorMsg = fetchedData.error {
+                            continuation.resume(with: .failure(TeslaError.customError(msg: errorMsg)))
                         }else {
                             continuation.resume(with: .failure(TeslaError.customError(msg: "Unknown error")))
                         }
@@ -143,6 +148,7 @@ extension CommandManager {
 
 extension CommandManager {
     /// 唤醒车辆的方式
+    /// Siri和快捷指令需要更短的反应时间
     public enum WakeUpInternal {
         case normal, siri
         

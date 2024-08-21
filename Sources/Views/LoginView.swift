@@ -287,6 +287,19 @@ extension LoginView {
                 finishLogin(.fail(error))
             }
         }
+        .overlay(alignment: .topLeading) {
+            // 直接退出
+            Button {
+                loadingMsg = nil
+                showLoginWebView = false
+            } label: {
+                Image(systemName: "xmark.circle")
+                    .imageScale(.large)
+                    .symbolVariant(.fill)
+                    .foregroundStyle(.gray)
+            }
+            .padding()
+        }
     }
     
     // 将网站编码转换为 Token
