@@ -18,19 +18,25 @@ public class CommandManager {
     public let authManager = AuthManager()
     public var canceller: AnyCancellable?
     
+    let isAllowRefresh: Bool
     // 第一次验证使用
-    public init() {
+    public init(isAllowRefresh: Bool) {
         self.canceller = nil
+        self.isAllowRefresh = isAllowRefresh
     }
     
-    public func requestToken(_ message: String) async throws -> HTTPHeaders {
+    public func requestToken(
+        _ message: String
+    ) async throws -> HTTPHeaders? {
         mylog.info("获取权鉴的目的：\(message)")
-        return try await authManager.requestToken()
+        return try await authManager.requestToken(isAllowRefresh: isAllowRefresh)
     }
     
     /// 获取所有账号下的车辆
     public func fetchAllVehicles() async throws -> [VehicleStore]? {
-        let headers = try await requestToken("Fetch All Vehicles")
+        guard let headers = try await requestToken("Fetch All Vehicles") else {
+            return nil
+        }
         return try await withCheckedThrowingContinuation({ contionuation in
             let endpoint = Endpoint.vehicles
             AF.request(endpoint.urlString(userRegion_),
@@ -62,7 +68,9 @@ public class CommandManager {
         carName: String,
         inService: Bool? = false
     ) async throws -> TeslaStore? {
-        let headers = try await requestToken("Fetch Vehicle Data")
+        guard let headers = try await requestToken("Fetch Vehicle Data") else {
+            return nil
+        }
         let endpoint = Endpoint.allStates(vehicleID: vehicle_id)
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(endpoint.urlString(userRegion_),
@@ -96,8 +104,12 @@ public class CommandManager {
     }
     
     /// 获取车辆当前位置
-    public func fetchVehicleLocation(_ vehicle_id: String) async throws -> DriveState? {
-        let headers = try await requestToken("Fetch Vehicle Location")
+    public func fetchVehicleLocation(
+        _ vehicle_id: String
+    ) async throws -> DriveState? {
+        guard let headers = try await requestToken("Fetch Vehicle Location") else {
+            return nil
+        }
         let endpoint = Endpoint.location(vehicleID: vehicle_id)
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(endpoint.urlString(userRegion_),
@@ -121,9 +133,18 @@ public class CommandManager {
 
 extension CommandManager {
     // 获取附近的超充站信息
-    public func fetchNearbyChargeSites(_ vehicle_id: String) async throws -> ChargeSiteStore? {
-        let headers = try await requestToken("Fetch Nearby Charge Sites")
-        let endpoint = Endpoint.nearbyChargingSites(vehicleID: vehicle_id, count: nil, radius: 40, detail: true)
+    public func fetchNearbyChargeSites(
+        _ vehicle_id: String
+    ) async throws -> ChargeSiteStore? {
+        guard let headers = try await requestToken("Fetch Nearby Charge Sites") else {
+            return nil
+        }
+        let endpoint = Endpoint.nearbyChargingSites(
+            vehicleID: vehicle_id,
+            count: nil,
+            radius: 40,
+            detail: true
+        )
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(endpoint.urlString(userRegion_),
                        method: endpoint.method,
@@ -166,7 +187,9 @@ extension CommandManager {
         _ vehicle_id: String,
         wakeUpInternal: WakeUpInternal = .normal
     ) async throws -> Bool {
-        let headers = try await requestToken("Wakeup Vehicle")
+        guard let headers = try await requestToken("Wakeup Vehicle") else {
+            return false
+        }
         let repeatSec = wakeUpInternal.paramater.timeInterval
         let maxCount = wakeUpInternal.paramater.count
         let stopDate = Date().addingTimeInterval(TimeInterval(maxCount * Int(repeatSec) - 1))
@@ -277,7 +300,9 @@ extension CommandManager {
     }
     
     private func commandVehicle(endpoint: Endpoint) async throws -> Bool {
-        let headers = try await requestToken("Command Vehicle")
+        guard let headers = try await requestToken("Command Vehicle") else {
+            return false
+        }
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(endpoint.urlString(userRegion_),
                        method: endpoint.method,

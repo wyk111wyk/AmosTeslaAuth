@@ -42,11 +42,11 @@ public enum UserRegion: String, Identifiable {
     var title: String {
         switch self {
         case .china:
-            return "中国或香港"
+            return "China or HK".localized()
         case .us:
-            return "北美或亚太"
+            return "North America or Asia".localized()
         case .europe:
-            return "欧洲、中东或非洲"
+            return "Europe, Middle East or Africa".localized()
         }
     }
     

@@ -9,6 +9,24 @@ import Foundation
 
 public enum VehicleStateType: String {
     case online, offline, asleep, inService, loginRequired, noCar
+    public var title: String {
+        var tempTitle = String.init()
+        switch self {
+        case .online:
+            tempTitle = "Online"
+        case .offline:
+            tempTitle = "Offline"
+        case .asleep:
+            tempTitle = "Asleep"
+        case .inService:
+            tempTitle = "In Service"
+        case .loginRequired:
+            tempTitle = "Need Login"
+        case .noCar:
+            tempTitle = "NoCar"
+        }
+        return tempTitle.localized()
+    }
 }
 
 struct TeslaRoot: Codable {
@@ -40,22 +58,22 @@ public struct TeslaStore: Codable, Identifiable {
 
 extension TeslaStore: CustomStringConvertible {
     public var description: String {
-        "id: \(id_s)\n vin: \(vin)\n state: \(state)\n display_name: \(display_name ?? "")\n in_service: \(in_service ?? false)\n fetchDate: \(fetchDate ?? Date())"
+        "id: \(id_s)\nvin: \(vin)\nbattery:\(charge_state.battery_range_km)\ntemp:\(climate_state.inside_temp_c)\nstate: \(state)\ndisplay_name: \(display_name ?? "")\nin_service: \(in_service ?? false)\nfetchDate: \(fetchDate ?? Date())"
     }
     
-    var is_online: Bool {
+    public var is_online: Bool {
         state == "online"
     }
     
-    var is_asleep: Bool {
+    public var is_asleep: Bool {
         state == "asleep"
     }
     
-    var isChanging: Bool {
+    public var isChanging: Bool {
         charge_state.is_changing
     }
     
-    var stateType: VehicleStateType {
+    public var stateType: VehicleStateType {
         if state == "online" {
             return .online
         }else if state == "offline" {
@@ -67,7 +85,7 @@ extension TeslaStore: CustomStringConvertible {
         }
     }
     
-    mutating func setState(_ type: VehicleStateType) {
+    public mutating func setState(_ type: VehicleStateType) {
         state = type.rawValue
     }
 }

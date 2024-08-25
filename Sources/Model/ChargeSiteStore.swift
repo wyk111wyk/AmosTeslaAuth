@@ -41,38 +41,38 @@ extension ChargeSiteStore {
 }
 
 public struct NearbyCharger: Codable {
-    struct Location: Codable {
+    public struct Location: Codable {
         let lat: Double
         let long: Double
     }
     
-    let location: Location
-    let name: String // 海口特斯拉中心
-    let type: String // destination / supercharger
-    let distance_miles: Double
-    let amenities: String?
+    public let location: Location
+    public let name: String // 海口特斯拉中心
+    public let type: String // destination / supercharger
+    public let distance_miles: Double
+    public let amenities: String?
     
     // Super charge
-    let available_stalls: Int?
-    let total_stalls: Int?
-    let site_closed: Bool?
-    var address: String?
+    public let available_stalls: Int?
+    public let total_stalls: Int?
+    public let site_closed: Bool?
+    public var address: String?
 }
 
 extension NearbyCharger: Identifiable {
     public var id: String {
         name + type + "\(distance_miles)"
     }
-    var distance_Locale: String {
+    public var distance_Locale: String {
         distance_miles.toUnit(unit: UnitLength.miles, degit: 1)
     }
-    var isClosed: Bool {
+    public var isClosed: Bool {
         site_closed ?? false
     }
-    enum ChargeType {
+    public enum ChargeType {
         case destination, supercharger, closedSupercharger
     }
-    var wrappedType: ChargeType {
+    public var wrappedType: ChargeType {
         if type == "destination" {
             return .destination
         }else {

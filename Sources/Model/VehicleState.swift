@@ -8,60 +8,60 @@
 import Foundation
 
 public struct VehicleState: Codable {
-    let api_version: Int
-    let car_version: String
-    let locked: Bool
+    public let api_version: Int
+    public let car_version: String
+    public let locked: Bool
     
     // 车门
-    let df: Int // 驾驶室 0 = closed, non-zero is open.
-    let pf: Int // 前排乘客
-    let dr: Int // 驾驶室后排
-    let pr: Int // 后排乘客
+    public let df: Int // 驾驶室 0 = closed, non-zero is open.
+    public let pf: Int // 前排乘客
+    public let dr: Int // 驾驶室后排
+    public let pr: Int // 后排乘客
     
     // 前后备箱
-    let ft : Int // front trunk 前备箱 0 == close
-    let rt: Int // rear trunk 后备箱
+    public let ft : Int // front trunk 前备箱 0 == close
+    public let rt: Int // rear trunk 后备箱
     
     // 窗户
-    let fd_window: Int // 0 - close - Front Drvier
-    let fp_window: Int
-    let rd_window: Int
-    let rp_window: Int
+    public let fd_window: Int // 0 - close - Front Drvier
+    public let fp_window: Int
+    public let rd_window: Int
+    public let rp_window: Int
     
     // 轮胎
-    let tpms_pressure_fl: Double?
-    let tpms_pressure_fr: Double?
-    let tpms_pressure_rl: Double?
-    let tpms_pressure_rr: Double?
-    let tpms_rcp_front_value: Double?
-    let tpms_rcp_rear_value: Double?
+    public let tpms_pressure_fl: Double?
+    public let tpms_pressure_fr: Double?
+    public let tpms_pressure_rl: Double?
+    public let tpms_pressure_rr: Double?
+    public let tpms_rcp_front_value: Double?
+    public let tpms_rcp_rear_value: Double?
     
-    let odometer: Double // total miles
+    public let odometer: Double // total miles
     var sentry_mode: Bool // 哨兵模式
-    let sentry_mode_available: Bool
+    public let sentry_mode_available: Bool
     
-    let remote_start: Bool // 远程启动状态
-    let remote_start_enabled: Bool
-    let remote_start_supported: Bool
+    public let remote_start: Bool // 远程启动状态
+    public let remote_start_enabled: Bool
+    public let remote_start_supported: Bool
     
-    let timestamp: Int64
-    let software_update: SoftwareUpdate
+    public let timestamp: Int64
+    public let software_update: SoftwareUpdate
 }
 
 public struct SoftwareUpdate: Codable {
-    let download_perc: Int // 0
-    let install_perc: Int // 0
-    let expected_duration_sec: Int // 2700
-    let status: String? // downloading_wifi_wait
-    let version: String? // 2021.36.5
+    public let download_perc: Int // 0
+    public let install_perc: Int // 0
+    public let expected_duration_sec: Int // 2700
+    public let status: String? // downloading_wifi_wait
+    public let version: String? // 2021.36.5
     
-    var expected_text: String {
+    public var expected_text: String {
         Double(expected_duration_sec).toUnit(unit: UnitDuration.seconds, degit: 1)
     }
 }
 
 extension VehicleState {
-    var hasUpdate: Bool {
+    public var hasUpdate: Bool {
         if let newVersion = software_update.version,
            newVersion.count > 2 {
             return true
@@ -69,7 +69,7 @@ extension VehicleState {
             return false
         }
     }
-    var newVersion: String? {
+    public var newVersion: String? {
         if let newVersion = software_update.version,
            newVersion.count > 2 {
             return newVersion
@@ -77,14 +77,14 @@ extension VehicleState {
             return nil
         }
     }
-    var car_version_prefix: String {
+    public var car_version_prefix: String {
         let index = car_version.firstIndex(of: " ")
         return String(car_version[..<index!])
     }
-    var is_windowAllClosed: Bool {
+    public var is_windowAllClosed: Bool {
         fd_window + fp_window + rd_window + rp_window == 0
     }
-    func is_tireTempLow(minTemp: Double = 2.5) -> Bool {
+    public func is_tireTempLow(minTemp: Double = 2.5) -> Bool {
         if let tpms_pressure_fl,
            let tpms_pressure_fr,
            let tpms_pressure_rl,
@@ -97,25 +97,25 @@ extension VehicleState {
             return false
         }
     }
-    var odometer_km: String {
+    public var odometer_km: String {
         let locale = Locale.current(langCode: .english)
         return odometer.toLength(unit: .miles, locale: locale)
     }
-    var isTruckAllClose: Bool {
+    public var isTruckAllClose: Bool {
         ft == 0 && rt == 0
     }
-    var isFrontTrunkClose: Bool {
+    public var isFrontTrunkClose: Bool {
         ft == 0
     }
-    var isRearTrunkClose: Bool {
+    public var isRearTrunkClose: Bool {
         rt == 0
     }
 }
 
 extension VehicleState {
-    enum VehicleDoor {
+    public enum VehicleDoor {
         case frontDriver, frontPassenger, rearDriver, rearPassenger
-        func isClosed(_ vehicle: VehicleState) -> Bool {
+        public func isClosed(_ vehicle: VehicleState) -> Bool {
             switch self {
             case .frontDriver:
                 vehicle.df == 0
@@ -128,14 +128,14 @@ extension VehicleState {
             }
         }
     }
-    var is_doorAllClosed: Bool {
+    public var is_doorAllClosed: Bool {
         df + pf + dr + pr == 0
     }
-    var is_doorAllOpen: Bool {
+    public var is_doorAllOpen: Bool {
         df != 0 && pf != 0 && dr != 0 && pr != 0
     }
     // 0 = close
-    func doorStateImageName() -> String {
+    public func doorStateImageName() -> String {
         if df == 0 && pf == 0 && dr == 0 && pr == 0 {
             return "car" // 全关
         }else if df != 0 && pf == 0 && dr == 0 && pr == 0 {

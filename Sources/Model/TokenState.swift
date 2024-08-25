@@ -8,13 +8,13 @@
 import Foundation
 
 public struct TokenState: Codable {
-    let access_token: String?
-    let expires_in: TimeInterval?
-    let id_token: String? // Only for bearer token
-    let refresh_token: String? // bearer response works
-    let state: String?
-    let token_type: String?
+    public let access_token: String?
+    public let expires_in: TimeInterval?
+    public let id_token: String? // Only for bearer token
+    public let refresh_token: String? // bearer response works
+    public let state: String?
+    public let token_type: String?
     
-    let error: String?
-    let error_description: String?
+    public let error: String?
+    public let error_description: String?
 }

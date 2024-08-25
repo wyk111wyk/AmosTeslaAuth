@@ -17,13 +17,18 @@ public class AuthManager {
     }
     
     /// 车辆认证的总入口
-    public func requestToken() async throws -> HTTPHeaders {
+    public func requestToken(
+        isAllowRefresh: Bool
+    ) async throws -> HTTPHeaders? {
         guard !savedAccessToken.isEmpty,
               !savedrefreshToken.isEmpty else {
             throw TeslaError.authenticationRequired
         }
         
         if hasExpired() {
+            guard isAllowRefresh else {
+                return nil
+            }
             // Token已过期,需要进行刷新
             // 只有最新的刷新令牌才有效
             debugPrint("====> Token已过期,需要进行认证de刷新")

@@ -71,8 +71,8 @@ public struct LoginView: View {
         .sheet(isPresented: $showLoginWebView) {
             authWebPage()
         }
-        .alert("登陆账号错误", isPresented: .isPresented($failError)) {
-            Button("OK", role: .cancel){}
+        .alert("Login Error".localized(), isPresented: .isPresented($failError)) {
+            Button("OK".localized(), role: .cancel){}
         } message: {
             Text(failError.debugDescription)
         }
@@ -128,7 +128,7 @@ public struct LoginView: View {
                     .foregroundColor(.gray)
                 ZStack(alignment: .leading) {
                     if username.isEmpty {
-                        Text("Enter your Tesla account")
+                        Text("Enter your Tesla account".localized())
                         .foregroundColor(.gray) }
                     TextField("", text: $username)
                         .foregroundColor(.black)
@@ -161,7 +161,7 @@ public struct LoginView: View {
                     .foregroundColor(.gray)
                 ZStack(alignment: .leading) {
                     if password.isEmpty {
-                        Text("Enter password")
+                        Text("Enter password".localized())
                         .foregroundColor(.gray) }
                     SecureField(
                         "",
@@ -188,7 +188,7 @@ public struct LoginView: View {
     
     private func regionPicker() -> some View {
         HStack {
-            Text("region:").foregroundStyle(.white)
+            Text("region:".localized()).foregroundStyle(.white)
             Picker("", selection: $userRegion) {
                 ForEach(UserRegion.allCase) {
                     Text($0.title).tag($0.rawValue)
@@ -202,7 +202,7 @@ public struct LoginView: View {
         Button(action: startLoginProcess) {
             HStack(alignment: .center) {
                 Spacer()
-                Text("Login")
+                Text("Login".localized())
                     .fontWeight(.bold)
                     .padding(.vertical, 12)
                     .padding(.horizontal, 80)
@@ -222,7 +222,7 @@ public struct LoginView: View {
     
     private func serviceLink() -> some View {
         Link(
-            "Tesla account service",
+            "Tesla account service".localized(),
             destination: supportLink()
         )
             .padding(.top, -15)
@@ -249,7 +249,7 @@ extension LoginView {
             finishLogin(.demo)
         }else {
             showLoginWebView = true
-            loadingMsg = "进行网站验证"
+            loadingMsg = "Start web authentication".localized()
         }
     }
     
@@ -281,7 +281,7 @@ extension LoginView {
             (result: Result<URL, Error>) in
             switch result {
                 case let .success(location):
-                loadingMsg = "正在获取权鉴"
+                loadingMsg = "Fetching token"
                 transferLocation(location.absoluteString)
                 case let .failure(error):
                 finishLogin(.fail(error))
@@ -322,16 +322,16 @@ extension LoginView {
     private func keyboardToolbarMenu() -> some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Button(action: previousField) {
-                Label("Previous", systemImage: "chevron.up")
+                Label("Previous".localized(), systemImage: "chevron.up")
             }.disabled(!hasPreviousField())
             Button(action: nextField) {
-                Label("Next", systemImage: "chevron.down")
+                Label("Next".localized(), systemImage: "chevron.down")
             }.disabled(!hasNextField())
             Spacer()
             Button(action: {
                 focusedField = nil
             }) {
-                Label("Dismiss keyboard", 
+                Label("Dismiss keyboard".localized(),
                       systemImage: "keyboard.chevron.compact.down")
             }.imageScale(.small)
         }
@@ -377,4 +377,5 @@ extension LoginView {
         presentState: .constant(true),
         isPushIn: false
     ) { _ in }
+        .environment(\.locale, Locale(identifier: "zh_Hans"))
 })

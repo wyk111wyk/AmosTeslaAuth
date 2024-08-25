@@ -15,6 +15,16 @@ public struct CommandInfo {
              yes = "Yes",
              no = "No"
         
+        func title() -> String {
+            switch self {
+            case .alwaysAsk:
+                "Always ask".localized()
+            case .yes:
+                "Yes".localized()
+            case .no:
+                "No".localized()
+            }
+        }
         func convertToConfirm() -> Bool {
             if self == .yes {
                 return true
@@ -37,9 +47,9 @@ public struct CommandInfo {
             case .alwaysAsk:
                 return nil
             case .yes:
-                return NSLocalizedString("Wake up your vehicle", comment: "")
+                return "Wake up your vehicle".localized()
             case .no:
-                return NSLocalizedString("Keep your vehicle asleep", comment: "")
+                return "Keep your vehicle asleep".localized()
             }
         }
     }
@@ -58,44 +68,46 @@ public struct CommandInfo {
         public var id: String { self.commandName() }
         
         func commandName() -> String {
+            var tempName = ""
             switch self {
             case .remoteStart:
-                return "Remote start drive"
+                tempName = "Remote start drive"
             case .lights:
-                return "Flash lights"
+                tempName = "Flash lights"
             case .horn:
-                return "Honk horn"
+                tempName = "Honk horn"
             case .doors:
-                return "Doors"
+                tempName = "Doors"
             case .frontTrunk:
-                return "Front trunk"
+                tempName = "Front trunk"
             case .rearTrunk:
-                return "Rear trunk"
+                tempName = "Rear trunk"
             case .windows:
-                return "Windows"
+                tempName = "Windows"
             case .climate:
-                return "Air condition"
+                tempName = "Air condition"
             case .chargeLimit:
-                return "Charge limit"
+                tempName = "Charge limit"
             case .chargeSet:
-                return "Charge state"
+                tempName = "Charge state"
             case .chargePortDoor:
-                return "Charge port door"
+                tempName = "Charge port door"
             case .setTemps:
-                return "Temps"
+                tempName = "Temps"
             case .wheelHeater:
-                return "Wheel heater"
+                tempName = "Wheel heater"
             case .sentry:
-                return "Sentry mode"
+                tempName = "Sentry mode"
             case .defrost:
-                return "Defrost"
+                tempName = "Defrost"
             case .dogMode:
-                return "Dog mode"
+                tempName = "Dog mode"
             case .campMode:
-                return "Camp mode"
+                tempName = "Camp mode"
             default:
-                return "-"
+                tempName = "-"
             }
+            return tempName.localized()
         }
         
         func imageName() -> String {
@@ -166,15 +178,15 @@ public struct CommandInfo {
         var value: String {
             switch self {
             case .open:
-                return "Open"
+                return "Open".localized()
             case .close:
-                return "Close"
+                return "Close".localized()
             case .setPercent(let limit):
                 return "\(limit)"
             case .setTemps(let temps):
                 return String(format: "%.1f", temps)
             case .alwaysAsk:
-                return "Control"
+                return "Control".localized()
             }
         }
         
@@ -190,15 +202,15 @@ public struct CommandInfo {
         func title() -> String {
             switch self {
             case .open:
-                return "Open"
+                return "Open".localized()
             case .close:
-                return "Close"
+                return "Close".localized()
             case .setPercent(let limit):
-                return CommandInfo.ChargeLimitPhase.phaseFromLimit(limit).describe()
+                return CommandInfo.ChargeLimitPhase.phaseFromLimit(limit).subTitle()
             case .setTemps(let temps):
-                return "Set temps" + ": " + "\(String(format: "%.1f", temps))"
+                return "Set temps".localized() + ": " + "\(String(format: "%.1f", temps))"
             case .alwaysAsk:
-                return "Control"
+                return "Control".localized()
             }
         }
         
@@ -207,11 +219,11 @@ public struct CommandInfo {
             case .open, .close:
                 return CommandInfo.genernateWay(part: part, way: self)
             case .setPercent(let limit):
-                return CommandInfo.ChargeLimitPhase.phaseFromLimit(limit).describe()
+                return CommandInfo.ChargeLimitPhase.phaseFromLimit(limit).subTitle()
             case .setTemps(let temps):
-                return "Set temps" + ": " + "\(String(format: "%.1f", temps))"
+                return "Set temps".localized() + ": " + "\(String(format: "%.1f", temps))"
             case .alwaysAsk:
-                return "Control"
+                return "Control".localized()
             }
         }
         
@@ -235,13 +247,13 @@ public struct CommandInfo {
             case .alwaysAsk:
                 return nil
             case .open:
-                return NSLocalizedString("Open, vent or unlock", comment: "")
+                return "Open, vent or unlock".localized()
             case .close:
-                return NSLocalizedString("Close or lock", comment: "")
+                return "Close or lock".localized()
             case .setTemps:
-                return "Set ac temps"
+                return "Set ac temps".localized()
             case .setPercent:
-                return NSLocalizedString("Set percentage like charge limit", comment: "设置充电等的百分比")
+                return "Set percentage like charge limit".localized()
             }
         }
     }
@@ -267,39 +279,26 @@ public struct CommandInfo {
         func title() -> String {
             switch self {
             case .fullCharge:
-                return "充满"
+                return "Full charge".localized()
             case .longRange:
-                return "长途"
+                return "Long range".localized()
             case .dailyUsage:
-                return "日常"
+                return "Daily usage".localized()
             case .maintenance:
-                return "维护"
+                return "Maintenance".localized()
             }
         }
         
-        func describe() -> String {
+        func subTitle() -> String {
             switch self {
             case .fullCharge:
-                return "100% - full charge"
+                return "100% - " + "Full charge".localized()
             case .longRange:
-                return "96% - long range"
+                return "96% - " + "Long range".localized()
             case .dailyUsage:
-                return "90% - daily usage"
+                return "90% - " + "Daily usage".localized()
             case .maintenance:
-                return "50% - maintenance"
-            }
-        }
-        
-        func textDescribe() -> String {
-            switch self {
-            case .fullCharge:
-                return "full charge"
-            case .longRange:
-                return "long range"
-            case .dailyUsage:
-                return "daily usage"
-            case .maintenance:
-                return "maintenance"
+                return "50% - " + "Maintenance".localized()
             }
         }
         
@@ -331,7 +330,9 @@ public struct CommandInfo {
     }
     
     /// 生成可操控部位的本地化名称
-    public static func genernatePart(part: CommandInfo.ControlVehiclePart) -> String {
+    public static func genernatePart(
+        part: CommandInfo.ControlVehiclePart
+    ) -> String {
         var partText = String.init()
         
         switch part {
@@ -373,12 +374,14 @@ public struct CommandInfo {
             partText = "camp mode"
         }
         
-        return partText
+        return partText.localized()
     }
     
     /// 通过部位生成动作的本地化名称: 打开
-    public static func genernateWay(part: CommandInfo.ControlVehiclePart,
-                             way: CommandInfo.ControlVehicleWay) -> String {
+    public static func genernateWay(
+        part: CommandInfo.ControlVehiclePart,
+        way: CommandInfo.ControlVehicleWay
+    ) -> String {
         var wayText = String.init()
         
         switch part {
@@ -451,21 +454,23 @@ public struct CommandInfo {
             }
         }
         
-        return wayText
+        return wayText.localized()
     }
     
-    public static func genernateSuggestion(part: CommandInfo.ControlVehiclePart,
-                             way: CommandInfo.ControlVehicleWay) -> String {
+    public static func genernateSuggestion(
+        part: CommandInfo.ControlVehiclePart,
+        way: CommandInfo.ControlVehicleWay
+    ) -> String {
         var partText = CommandInfo.genernatePart(part: part)
         if part == .alwaysAsk {
-            partText = "vehicle"
+            partText = "vehicle".localized()
         }
         let wayText = CommandInfo.genernateWay(part: part, way: way)
         
         // 将动作和部位组合到一起
         var suggestion = wayText + " " + partText
         if part == .chargeLimit {
-            suggestion = suggestion + " to \(CommandInfo.ChargeLimitPhase.phaseFromLimit(way.percent()).textDescribe())"
+            suggestion = suggestion + " to \(CommandInfo.ChargeLimitPhase.phaseFromLimit(way.percent()).subTitle())"
         }
         
         return suggestion

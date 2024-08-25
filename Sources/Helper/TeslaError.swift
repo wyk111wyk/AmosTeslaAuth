@@ -23,36 +23,39 @@ public enum TeslaError: Error, Equatable, LocalizedError {
     case dataSerializationError(msg: String)
     case customError(msg: String)
     
-    public var errorDescription: String? {
+    public var errorDescription: String {
+        var errorMsg = ""
         switch self {
         case .accountOrPasswordWrong:
-            return "AccountWrongDescription"
+            errorMsg = "AccountWrongError"
         case .networkError(error: let error):
-            return "Network error: \(error.localizedDescription)"
+            errorMsg = "Network error: \(error.localizedDescription)"
         case .authenticationFailed:
-            return "Authentication failed, please update your App"
+            errorMsg = "Authentication failed, please update your App"
         case .wrongLocale:
-            return "Please change your system locale to current region"
+            errorMsg = "Please change your system locale to current region"
         case .frequentError:
-            return "frequentError"
+            errorMsg = "frequentError"
         case .recaptchaError:
-            return "Recaptcha Error"
+            errorMsg = "Recaptcha Error"
         case .authenticationRequired:
-            return "Authentication required"
+            errorMsg = "Authentication required"
         case .tokenRevoked:
-            return "token Revoked"
+            errorMsg = "Token Revoked"
         case .watchRefresh:
-            return "Refresh on one device"
+            errorMsg = "Refresh on one device"
         case .decodeError:
-            return "Decode wrong"
+            errorMsg = "Decode wrong"
         case .encodeError:
-            return "Encode wrong"
+            errorMsg = "Encode wrong"
         case .notReachable:
-            return "notReachableError"
+            errorMsg = "notReachableError"
         case .dataSerializationError(let msg):
-            return "dataSerializationError" + "\n" + "\(msg)"
+            errorMsg = "dataSerializationError" + "\n" + "\(msg)"
         case .customError(let msg):
-            return msg
+            errorMsg = msg
         }
+        
+        return errorMsg.localized()
     }
 }

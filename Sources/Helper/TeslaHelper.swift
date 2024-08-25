@@ -21,8 +21,10 @@ extension Dictionary {
 
 extension Locale {
     /// 当前系统设置的Locale（可设置显示的语言和区域）
-    static func current(langCode: Locale.LanguageCode? = nil,
-                        region: Locale.Region? = nil) -> Locale {
+    static func current(
+        langCode: Locale.LanguageCode? = nil,
+        region: Locale.Region? = nil
+    ) -> Locale {
         var components = Locale.Components(locale: .current)
         if let langCode {
             components.languageComponents.languageCode = langCode
@@ -39,6 +41,19 @@ extension Locale {
 extension String {
     var urlEncoded: String {
         return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+    }
+    
+    func localized(
+        tableName: String? = nil,
+        bundle: Bundle = .module,
+        comment: String = ""
+    ) -> String {
+        NSLocalizedString(
+            self,
+            tableName: tableName,
+            bundle: bundle,
+            comment: comment
+        )
     }
 }
 
@@ -59,14 +74,18 @@ extension Binding {
 }
 
 extension BinaryFloatingPoint {
-    func distanceWithLocale(_ degit: Int = 1,
-                            style: Formatter.UnitStyle = .medium,
-                            withUnit: Bool = true) -> String {
+    func distanceWithLocale(
+        _ degit: Int = 1,
+        style: Formatter.UnitStyle = .medium,
+        withUnit: Bool = true
+    ) -> String {
         toUnit(unit: UnitLength.miles, degit: degit, style: style, withUnit: withUnit)
     }
     
-    func temperatureWithLocale(_ degit: Int = 1,
-                               options: MeasurementFormatter.UnitOptions = .naturalScale) -> String {
+    func temperatureWithLocale(
+        _ degit: Int = 1,
+        options: MeasurementFormatter.UnitOptions = .naturalScale
+    ) -> String {
         toUnit(unit: UnitTemperature.celsius, degit: degit, option: options)
     }
     
@@ -100,9 +119,11 @@ extension BinaryFloatingPoint {
         return result
     }
     
-    func toDuration(units: NSCalendar.Unit = [.hour, .minute],
-                    style: DateComponentsFormatter.UnitsStyle = .brief,
-                    locale: Locale = .current) -> String {
+    func toDuration(
+        units: NSCalendar.Unit = [.hour, .minute],
+        style: DateComponentsFormatter.UnitsStyle = .brief,
+        locale: Locale = .current
+    ) -> String {
         let formatter = DateComponentsFormatter()
         var calendar = Calendar.current
         calendar.locale = locale
@@ -113,12 +134,14 @@ extension BinaryFloatingPoint {
         return formatter.string(from: TimeInterval(self)) ?? "-"
     }
     
-    func toLength(unit: UnitLength = .meters,
-                  outUnit: UnitLength? = nil,
-                  degit: Int = 1,
-                  style: Formatter.UnitStyle = .medium,
-                  locale: Locale = .current,
-                  withUnit: Bool = true) -> String {
+    func toLength(
+        unit: UnitLength = .meters,
+        outUnit: UnitLength? = nil,
+        degit: Int = 1,
+        style: Formatter.UnitStyle = .medium,
+        locale: Locale = .current,
+        withUnit: Bool = true
+    ) -> String {
         self.toUnit(unit: unit, outUnit: outUnit, degit: degit, style: style, locale: locale, withUnit: withUnit)
     }
 }

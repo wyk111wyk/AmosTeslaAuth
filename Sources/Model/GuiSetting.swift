@@ -8,10 +8,10 @@
 import Foundation
 
 public struct GuiSetting: Codable {
-    let gui_24_hour_time: Bool
-    let gui_charge_rate_units: String // km/hr / mi/hr
-    let gui_distance_units: String // km/hr
-    let gui_range_display: String
-    let gui_temperature_units: String // C / F
-    let show_range_units: Bool
+    public let gui_24_hour_time: Bool
+    public let gui_charge_rate_units: String // km/hr / mi/hr
+    public let gui_distance_units: String // km/hr
+    public let gui_range_display: String
+    public let gui_temperature_units: String // C / F
+    public let show_range_units: Bool
 }

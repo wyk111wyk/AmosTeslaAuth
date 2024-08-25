@@ -8,65 +8,67 @@
 import Foundation
 
 public struct ClimateState: Codable {
-    let battery_heater: Bool
-    var is_climate_on: Bool
-    let is_auto_conditioning_on: Bool
-    var is_front_defroster_on: Bool
-    let inside_temp: Double?
-    let outside_temp: Double?
-    var driver_temp_setting: Double
-    let passenger_temp_setting: Double
-    var climate_keeper_mode: String // off / dog / camp
+    public let battery_heater: Bool
+    public var is_climate_on: Bool
+    public let is_auto_conditioning_on: Bool
+    public var is_front_defroster_on: Bool
+    public let inside_temp: Double?
+    public let outside_temp: Double?
+    public var driver_temp_setting: Double
+    public let passenger_temp_setting: Double
+    public var climate_keeper_mode: String // off / dog / camp
     
-    let seat_heater_left: Int
-    let seat_heater_right: Int
-    let seat_heater_rear_left: Int?
-    let seat_heater_rear_center: Int?
-    let seat_heater_rear_right: Int?
+    public let seat_heater_left: Int
+    public let seat_heater_right: Int
+    public let seat_heater_rear_left: Int?
+    public let seat_heater_rear_center: Int?
+    public let seat_heater_rear_right: Int?
     
-    let side_mirror_heaters: Bool
-    let wiper_blade_heater: Bool
-    var steering_wheel_heater: Bool?
+    public let side_mirror_heaters: Bool
+    public let wiper_blade_heater: Bool
+    public var steering_wheel_heater: Bool?
     // 过热保护开启 FanOnly
-    let cabin_overheat_protection: String?
+    public let cabin_overheat_protection: String?
 }
 
 extension ClimateState {
-    var wrapped_inside_temp: Double {
+    public var wrapped_inside_temp: Double {
         inside_temp ?? 0
     }
-    var wrapped_outside_temp: Double {
+    public var wrapped_outside_temp: Double {
         outside_temp ?? 0
     }
-    var inside_temp_c: String {
+    public var inside_temp_c: String {
         if inside_temp != nil {
             return inside_temp!.temperatureWithLocale()
         }else {
             return "-"
         }
     }
-    var outside_temp_c: String {
+    public var outside_temp_c: String {
         if outside_temp != nil {
             return outside_temp!.temperatureWithLocale()
         }else {
             return "-"
         }
     }
-    var temp_setting_c: String {
+    public var temp_setting_c: String {
         driver_temp_setting.temperatureWithLocale()
     }
-    var wrapped_wheel_heater_on: Bool {
+    public var wrapped_wheel_heater_on: Bool {
         steering_wheel_heater ?? false
     }
     
     // 座位状态：加热、吹风、按摩
-    enum SeatCondition {
+    public enum SeatCondition {
         case off, heat, cool, massage
     }
-    enum SeatPosistion {
+    public enum SeatPosistion {
         case frontLeft, frontRight, rearLeft, rearCenter, rearRight
     }
-    func seatHeatCondition(_ position: SeatPosistion) -> SeatCondition {
+    public func seatHeatCondition(
+        _ position: SeatPosistion
+    ) -> SeatCondition {
         switch position {
         case .frontLeft:
             return seat_heater_left > 0 ? .heat : .off
@@ -82,10 +84,10 @@ extension ClimateState {
     }
     
     // 空调模式：宠物、露营
-    enum ClimateKeepMode: String {
+    public enum ClimateKeepMode: String {
         case off, dog, camp
     }
-    var wrapped_climate_keeper_mode: ClimateKeepMode {
+    public var wrapped_climate_keeper_mode: ClimateKeepMode {
         if climate_keeper_mode == "off" || climate_keeper_mode == "unknown" {
             return .off
         }else if climate_keeper_mode == "dog" {
@@ -94,7 +96,9 @@ extension ClimateState {
             return .camp
         }
     }
-    mutating func changeClimateMode(_ newMode: ClimateKeepMode) {
+    public mutating func changeClimateMode(
+        _ newMode: ClimateKeepMode
+    ) {
         if wrapped_climate_keeper_mode == newMode {
             climate_keeper_mode = ClimateKeepMode.off.rawValue
         }else {

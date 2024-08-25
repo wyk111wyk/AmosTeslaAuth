@@ -69,10 +69,10 @@ public struct VehicleStore: Codable, Identifiable, Hashable {
 }
 
 extension VehicleStore {
-    var is_online: Bool {
+    public var is_online: Bool {
         state == "online"
     }
-    var stateType: VehicleStateType {
+    public var stateType: VehicleStateType {
         if state == "online" {
             return .online
         }else if state == "offline" {
@@ -87,7 +87,7 @@ extension VehicleStore {
             return .noCar
         }
     }
-    mutating func setState(_ type: VehicleStateType) {
+    public mutating func setState(_ type: VehicleStateType) {
         state = type.rawValue
     }
 }
