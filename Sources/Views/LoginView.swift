@@ -16,7 +16,7 @@ public struct LoginView: View {
     
     @State private var showLoginWebView = false
     @State private var loadingMsg: String? = nil
-    @State private var failError: Error? = nil
+    @State private var failError: TeslaError? = nil
     
     private enum FieldType: Int, Hashable, CaseIterable {
         case userName, password
@@ -72,9 +72,13 @@ public struct LoginView: View {
             authWebPage()
         }
         .alert("Login Error".localized(), isPresented: .isPresented($failError)) {
-            Button("OK".localized(), role: .cancel){}
+            Button(role: .cancel) {}label: {
+                Text("OK".toLocalizedKey(), bundle: .module)
+            }
         } message: {
-            Text(failError.debugDescription)
+            if let failError {
+                Text(failError.errorDescription)
+            }
         }
     }
     
@@ -104,7 +108,7 @@ public struct LoginView: View {
                 VStack(spacing: 30) {
                     ProgressView()
                         .scaleEffect(2.0)
-                    Text(loadingMsg)
+                    Text(loadingMsg.toLocalizedKey(), bundle: .module)
                         .font(.headline)
                 }
             }
@@ -128,7 +132,7 @@ public struct LoginView: View {
                     .foregroundColor(.gray)
                 ZStack(alignment: .leading) {
                     if username.isEmpty {
-                        Text("Enter your Tesla account".localized())
+                        Text("Enter your Tesla account", bundle: .module)
                         .foregroundColor(.gray) }
                     TextField("", text: $username)
                         .foregroundColor(.black)
@@ -161,7 +165,7 @@ public struct LoginView: View {
                     .foregroundColor(.gray)
                 ZStack(alignment: .leading) {
                     if password.isEmpty {
-                        Text("Enter password".localized())
+                        Text("Enter password", bundle: .module)
                         .foregroundColor(.gray) }
                     SecureField(
                         "",
@@ -188,10 +192,12 @@ public struct LoginView: View {
     
     private func regionPicker() -> some View {
         HStack {
-            Text("region:".localized()).foregroundStyle(.white)
+            Text("region:", bundle: .module).foregroundStyle(.white)
             Picker("", selection: $userRegion) {
                 ForEach(UserRegion.allCase) {
-                    Text($0.title).tag($0.rawValue)
+                    Text($0.title.toLocalizedKey(), bundle: .module)
+                        .font(.body.bold())
+                        .tag($0.rawValue)
                 }
             }
             .tint(.white)
@@ -202,7 +208,7 @@ public struct LoginView: View {
         Button(action: startLoginProcess) {
             HStack(alignment: .center) {
                 Spacer()
-                Text("Login".localized())
+                Text("Login", bundle: .module)
                     .fontWeight(.bold)
                     .padding(.vertical, 12)
                     .padding(.horizontal, 80)
@@ -220,11 +226,11 @@ public struct LoginView: View {
         .disabled(disableButton())
     }
     
+    @ViewBuilder
     private func serviceLink() -> some View {
-        Link(
-            "Tesla account service".localized(),
-            destination: supportLink()
-        )
+        Link(destination: supportLink(), label: {
+            Text("Tesla account service", bundle: .module)
+        })
             .padding(.top, -15)
             .foregroundStyle(.regularMaterial)
             .buttonStyle(.plain)
@@ -249,7 +255,7 @@ extension LoginView {
             finishLogin(.demo)
         }else {
             showLoginWebView = true
-            loadingMsg = "Start web authentication".localized()
+            loadingMsg = "Start web authentication"
         }
     }
     
@@ -268,7 +274,7 @@ extension LoginView {
             self.presentState = false
         case .fail(let error):
             debugPrint("通过网页验证失败: \(error.localizedDescription)")
-            failError = error
+            failError = TeslaError.customError(msg: error.localizedDescription)
         }
     }
     
@@ -321,17 +327,11 @@ extension LoginView {
     @ToolbarContentBuilder
     private func keyboardToolbarMenu() -> some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
-            Button(action: previousField) {
-                Label("Previous".localized(), systemImage: "chevron.up")
-            }.disabled(!hasPreviousField())
-            Button(action: nextField) {
-                Label("Next".localized(), systemImage: "chevron.down")
-            }.disabled(!hasNextField())
             Spacer()
             Button(action: {
                 focusedField = nil
             }) {
-                Label("Dismiss keyboard".localized(),
+                Label("Dismiss keyboard".toLocalizedKey(),
                       systemImage: "keyboard.chevron.compact.down")
             }.imageScale(.small)
         }

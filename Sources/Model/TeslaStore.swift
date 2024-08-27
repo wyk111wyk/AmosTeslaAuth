@@ -25,7 +25,7 @@ public enum VehicleStateType: String {
         case .noCar:
             tempTitle = "NoCar"
         }
-        return tempTitle.localized()
+        return tempTitle
     }
 }
 

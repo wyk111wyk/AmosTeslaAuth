@@ -20,6 +20,22 @@ extension Dictionary {
 }
 
 extension Locale {
+    static var zhHans: Locale {
+        Locale(identifier: "zh_Hans")
+    }
+    
+    static var zhHanz: Locale {
+        Locale(identifier: "zh_Hanz")
+    }
+    
+    static var enUS: Locale {
+        Locale(identifier: "en_US")
+    }
+    
+    static var deDE: Locale {
+        Locale(identifier: "de_DE")
+    }
+    
     /// 当前系统设置的Locale（可设置显示的语言和区域）
     static func current(
         langCode: Locale.LanguageCode? = nil,
@@ -43,16 +59,15 @@ extension String {
         return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
     }
     
-    func localized(
-        tableName: String? = nil,
-        bundle: Bundle = .module,
-        comment: String = ""
-    ) -> String {
-        NSLocalizedString(
-            self,
-            tableName: tableName,
-            bundle: bundle,
-            comment: comment
+    func toLocalizedKey() -> LocalizedStringKey {
+        LocalizedStringKey(self)
+    }
+    
+    func localized() -> String {
+        String(
+            localized: String.LocalizationValue(self),
+            table: "Localizable",
+            bundle: .module
         )
     }
 }
