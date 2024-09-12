@@ -7,29 +7,24 @@
 
 import SwiftUI
 
-struct LoclizationView: View {
+public struct LoclizationView: View {
     let testText = "AccountWrongError"
     var zhText01: LocalizedStringKey {
         LocalizedStringKey(testText)
     }
     var zhText02: String {
-        String(
-            localized: String.LocalizationValue(testText),
-            table: "Localizable",
+        let value = String.LocalizationValue(testText)
+        let text = String(
+            localized: value,
             bundle: .module
         )
+        return text
     }
     var zhText03: String {
-        NSLocalizedString(
-            testText,
-            tableName: "Localizable",
-            bundle: .module,
-            value: testText,
-            comment: ""
-        )
+        String(localized: "AccountWrongError", defaultValue: "", bundle: .module)
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 20) {
             Text(LocalizedStringKey(testText), bundle: .module)
             Text(zhText01, bundle: .module)

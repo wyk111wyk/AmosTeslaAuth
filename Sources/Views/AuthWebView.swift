@@ -8,13 +8,14 @@
 import Foundation
 import SwiftUI
 #if !os(watchOS)
-import WebKit
+@preconcurrency import WebKit
 #endif
 import OSLog
 
 /*
  进行网页认证需要将 web 链接在特斯拉 Fleet 进行绑定
  */
+#if os(iOS)
 private let mylog = Logger(subsystem: "AuthWebView", category: "Auth")
 public struct AuthWebView: UIViewRepresentable {
     init(userRegion: UserRegion,
@@ -106,3 +107,4 @@ public class AuthCoordinator: NSObject, WKNavigationDelegate {
         self.parent.presentState = false
     }
 }
+#endif

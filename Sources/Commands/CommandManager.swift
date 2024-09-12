@@ -15,14 +15,16 @@ private let mylog = Logger(subsystem: "CommandManager", category: "Command")
 public class CommandManager {
     @AppStorage("UserRegion") private var userRegion = "china"
     public var userRegion_: UserRegion { .init(rawValue: userRegion) ?? .china }
-    public let authManager = AuthManager()
+    public let authManager: AuthManager
     public var canceller: AnyCancellable?
     
     let isAllowRefresh: Bool
     // 第一次验证使用
-    public init(isAllowRefresh: Bool) {
+    public init(isAllowRefresh: Bool,
+                token: Binding<TokenModel>) {
         self.canceller = nil
         self.isAllowRefresh = isAllowRefresh
+        self.authManager = AuthManager(token: token)
     }
     
     public func requestToken(

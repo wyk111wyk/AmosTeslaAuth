@@ -11,6 +11,8 @@ import Foundation
 public struct LoginView: View {
     @AppStorage("UserRegion") private var userRegion = "china"
     
+    @Binding var token: TokenModel
+    
     @State private var username: String = ""
     @State private var password: String = ""
     
@@ -32,6 +34,7 @@ public struct LoginView: View {
     public let loginAction: (LoginState) -> Void
     
     public init(
+        token: Binding<TokenModel>,
         presentState: Binding<Bool>,
         isPushIn: Bool,
         loginAction: @escaping (LoginState) -> Void
@@ -40,6 +43,7 @@ public struct LoginView: View {
             _username = State(wrappedValue: key.username)
             _password = State(wrappedValue: key.password)
         }
+        self._token = token
         self._presentState = presentState
         self.isPushIn = isPushIn
         self.loginAction = loginAction
@@ -68,9 +72,11 @@ public struct LoginView: View {
         .overlay(alignment: .center) {
             loadingHud()
         }
+#if os(iOS)
         .sheet(isPresented: $showLoginWebView) {
             authWebPage()
         }
+#endif
         .alert("Login Error".localized(), isPresented: .isPresented($failError)) {
             Button(role: .cancel) {}label: {
                 Text("OK".toLocalizedKey(), bundle: .module)
@@ -81,7 +87,10 @@ public struct LoginView: View {
             }
         }
     }
-    
+}
+
+// MARK: - 方法 Methods
+extension LoginView {
     @ViewBuilder
     private func dismissButton() -> some View {
         if !isPushIn {
@@ -116,6 +125,13 @@ public struct LoginView: View {
         }
     }
     
+    private func disableButton() -> Bool {
+        username.isEmpty || password.isEmpty || loadingMsg != nil
+    }
+}
+
+// MARK: - 视图 Views
+extension LoginView {
     private func topIcon() -> some View {
         VStack {
             teslaIcon()
@@ -137,10 +153,11 @@ public struct LoginView: View {
                     TextField("", text: $username)
                         .foregroundColor(.black)
                         .textContentType(.username)
+                        .focused($focusedField, equals: .userName)
+                    #if os(iOS)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .ignoresSafeArea(.keyboard)
-                        .focused($focusedField, equals: .userName)
                         .overlay(alignment: .trailing) {
                             if !username.isEmpty {
                                 Button {
@@ -153,6 +170,7 @@ public struct LoginView: View {
                                 .buttonStyle(.plain)
                             }
                         }
+                    #endif
                 }
             }
             .padding()
@@ -176,9 +194,11 @@ public struct LoginView: View {
                         })
                         .foregroundColor(.black)
                         .textContentType(.password)
+                        .focused($focusedField, equals: .password)
+                    #if os(iOS)
                         .autocapitalization(.none)
                         .ignoresSafeArea(.keyboard)
-                        .focused($focusedField, equals: .password)
+                    #endif
                 }
             }
             .padding()
@@ -237,16 +257,13 @@ public struct LoginView: View {
     }
     
     private func teslaIcon() -> Image {
-        let path = Bundle.module.path(forResource: "person_tesla", ofType: "png")!
-        let image = Image(uiImage: .init(contentsOfFile: path)!)
+        let image = Image(packageResource: "person_tesla", ofType: "png")
         return image
     }
 }
 
+// MARK: - 认证 Auth
 extension LoginView {
-    private func disableButton() -> Bool {
-        username.isEmpty || password.isEmpty || loadingMsg != nil
-    }
     
     func startLoginProcess() {
         focusedField = nil
@@ -279,6 +296,7 @@ extension LoginView {
     }
     
     // 通过网页进行认证
+    #if os(iOS)
     private func authWebPage() -> some View {
         AuthWebView(
             userRegion: UserRegion(rawValue: userRegion) ?? .china,
@@ -307,13 +325,14 @@ extension LoginView {
             .padding()
         }
     }
+    #endif
     
     // 将网站编码转换为 Token
     private func transferLocation(_ location: String) {
         if let code = location.parseLocationCode() {
             Task {
                 do {
-                    try await AuthManager().transferToken(code)
+                    try await AuthManager(token: $token).transferToken(code)
                     finishLogin(.login)
                 }catch {
                     finishLogin(.fail(error))
@@ -372,9 +391,13 @@ extension LoginView {
     }
 }
 
+@available(iOS 17.0, macOS 14, watchOS 10, *)
 #Preview("Login", body: {
+    @Previewable @State var token = TokenModel()
+    @Previewable @State var isPresent = false
     LoginView(
-        presentState: .constant(true),
+        token: $token,
+        presentState: $isPresent,
         isPushIn: false
     ) { _ in }
         .environment(\.locale, Locale(identifier: "zh_Hans"))

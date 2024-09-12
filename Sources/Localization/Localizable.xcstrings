@@ -18,6 +18,12 @@
             "state" : "translated",
             "value" : "账号或者密码错误"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "賬號或者密碼錯誤"
+          }
         }
       }
     },
@@ -28,6 +34,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "空调"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空調"
           }
         }
       }
@@ -40,6 +52,12 @@
             "state" : "translated",
             "value" : "空调"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空調"
+          }
         }
       }
     },
@@ -51,6 +69,12 @@
             "state" : "translated",
             "value" : "始终询问"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "始終詢問"
+          }
         }
       }
     },
@@ -58,6 +82,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "休眠"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "休眠"
@@ -73,6 +103,12 @@
             "state" : "translated",
             "value" : "登录失败，请升级应用"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登錄失敗，請升級應用"
+          }
         }
       }
     },
@@ -83,6 +119,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请先登录账户"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請先登錄賬戶"
           }
         }
       }
@@ -95,6 +137,12 @@
             "state" : "translated",
             "value" : "露营模式"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "露營模式"
+          }
         }
       }
     },
@@ -105,6 +153,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "露营模式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "露營模式"
           }
         }
       }
@@ -117,6 +171,12 @@
             "state" : "translated",
             "value" : "充电比例"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充電比例"
+          }
         }
       }
     },
@@ -127,6 +187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "充电限额"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充電限額"
           }
         }
       }
@@ -139,6 +205,12 @@
             "state" : "translated",
             "value" : "充电口"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充電口"
+          }
         }
       }
     },
@@ -149,6 +221,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "充电口"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充電口"
           }
         }
       }
@@ -161,6 +239,12 @@
             "state" : "translated",
             "value" : "充电情况"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充電情況"
+          }
         }
       }
     },
@@ -171,6 +255,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "充电"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充電"
           }
         }
       }
@@ -183,6 +273,12 @@
             "state" : "translated",
             "value" : "中国或香港"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中國或香港"
+          }
         }
       }
     },
@@ -194,15 +290,28 @@
             "state" : "translated",
             "value" : "关闭"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
+          }
         }
       }
     },
     "Close or lock" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "关闭或上锁"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉或上鎖"
           }
         }
       }
@@ -211,6 +320,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "操控"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "操控"
@@ -226,6 +341,12 @@
             "state" : "translated",
             "value" : "日常"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日常"
+          }
         }
       }
     },
@@ -233,6 +354,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "除霜"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "除霜"
@@ -248,15 +375,28 @@
             "state" : "translated",
             "value" : "除霜"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "除霜"
+          }
         }
       }
     },
     "Dismiss keyboard" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "关闭键盘"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉鍵盤"
           }
         }
       }
@@ -269,6 +409,12 @@
             "state" : "translated",
             "value" : "宠物模式"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寵物模式"
+          }
         }
       }
     },
@@ -279,6 +425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "宠物模式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寵物模式"
           }
         }
       }
@@ -291,6 +443,12 @@
             "state" : "translated",
             "value" : "车门"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車門"
+          }
         }
       }
     },
@@ -301,6 +459,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "车门"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車門"
           }
         }
       }
@@ -313,6 +477,12 @@
             "state" : "translated",
             "value" : "驾驶"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "駕駛"
+          }
         }
       }
     },
@@ -323,6 +493,12 @@
             "state" : "translated",
             "value" : "输入密码"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入密碼"
+          }
         }
       }
     },
@@ -332,6 +508,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "输入 Tesla 账号"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入 Tesla 賬號"
           }
         }
       }
@@ -344,6 +526,12 @@
             "state" : "translated",
             "value" : "欧洲、中东或非洲"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "歐洲、中東或非洲"
+          }
         }
       }
     },
@@ -354,6 +542,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在获取权鉴"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在獲取權鑒"
           }
         }
       }
@@ -366,6 +560,12 @@
             "state" : "translated",
             "value" : "闪烁"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閃爍"
+          }
         }
       }
     },
@@ -376,6 +576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "闪烁前灯"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閃爍前燈"
           }
         }
       }
@@ -394,6 +600,12 @@
             "state" : "translated",
             "value" : "刷新过于频繁"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刷新過於頻繁"
+          }
         }
       }
     },
@@ -404,6 +616,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "前备箱"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前備箱"
           }
         }
       }
@@ -416,6 +634,12 @@
             "state" : "translated",
             "value" : "前备箱"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前備箱"
+          }
         }
       }
     },
@@ -426,6 +650,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "充满"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充滿"
           }
         }
       }
@@ -438,6 +668,12 @@
             "state" : "translated",
             "value" : "鸣笛"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鳴笛"
+          }
         }
       }
     },
@@ -449,6 +685,12 @@
             "state" : "translated",
             "value" : "车辆鸣笛"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車輛鳴笛"
+          }
         }
       }
     },
@@ -456,6 +698,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "喇叭"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "喇叭"
@@ -471,15 +719,28 @@
             "state" : "translated",
             "value" : "维修"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "維修"
+          }
         }
       }
     },
     "Keep your vehicle asleep" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "保持车辆休眠"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保持車輛休眠"
           }
         }
       }
@@ -492,6 +753,12 @@
             "state" : "translated",
             "value" : "车灯"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車燈"
+          }
         }
       }
     },
@@ -503,6 +770,12 @@
             "state" : "translated",
             "value" : "锁上"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鎖上"
+          }
         }
       }
     },
@@ -513,15 +786,28 @@
             "state" : "translated",
             "value" : "登录"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登錄"
+          }
         }
       }
     },
     "Login Error" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "登陆账号错误"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登陸賬號錯誤"
           }
         }
       }
@@ -534,6 +820,12 @@
             "state" : "translated",
             "value" : "长途"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "長途"
+          }
         }
       }
     },
@@ -544,6 +836,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "维护"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "維護"
           }
         }
       }
@@ -556,6 +854,12 @@
             "state" : "translated",
             "value" : "需要登录"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要登錄"
+          }
         }
       }
     },
@@ -567,16 +871,28 @@
             "state" : "translated",
             "value" : "网络错误"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "網絡錯誤"
+          }
         }
       }
     },
     "Next" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "下一项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下一項"
           }
         }
       }
@@ -585,6 +901,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不是"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "不是"
@@ -600,6 +922,12 @@
             "state" : "translated",
             "value" : "没有车辆"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有車輛"
+          }
         }
       }
     },
@@ -610,6 +938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "北美或亚太"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "北美或亞太"
           }
         }
       }
@@ -628,6 +962,12 @@
             "state" : "translated",
             "value" : "无法与服务器进行连接"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法與服務器進行連接"
+          }
         }
       }
     },
@@ -639,15 +979,28 @@
             "state" : "translated",
             "value" : "离线"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "離線"
+          }
         }
       }
     },
     "OK" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "确认"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認"
           }
         }
       }
@@ -660,6 +1013,12 @@
             "state" : "translated",
             "value" : "在线"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在線"
+          }
         }
       }
     },
@@ -671,15 +1030,28 @@
             "state" : "translated",
             "value" : "开启"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啓"
+          }
         }
       }
     },
     "Open, vent or unlock" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "开启、通风或解锁"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啓、通風或解鎖"
           }
         }
       }
@@ -688,6 +1060,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "部位"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "部位"
@@ -703,16 +1081,28 @@
             "state" : "translated",
             "value" : "更改系统区域匹配购车地区"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改系統區域匹配購車地區"
+          }
         }
       }
     },
     "Previous" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "上一项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上一項"
           }
         }
       }
@@ -725,6 +1115,12 @@
             "state" : "translated",
             "value" : "后备箱"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "後備箱"
+          }
         }
       }
     },
@@ -736,6 +1132,12 @@
             "state" : "translated",
             "value" : "后备箱"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "後備箱"
+          }
         }
       }
     },
@@ -745,6 +1147,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "区域："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "區域："
           }
         }
       }
@@ -757,6 +1165,12 @@
             "state" : "translated",
             "value" : "遥控启动"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "遙控啓動"
+          }
         }
       }
     },
@@ -768,6 +1182,12 @@
             "state" : "translated",
             "value" : "远程遥控启动"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "遠程遙控啓動"
+          }
         }
       }
     },
@@ -775,6 +1195,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "哨兵模式"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "哨兵模式"
@@ -790,6 +1216,12 @@
             "state" : "translated",
             "value" : "哨兵模式"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "哨兵模式"
+          }
         }
       }
     },
@@ -800,6 +1232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "设置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設置"
           }
         }
       }
@@ -812,16 +1250,28 @@
             "state" : "translated",
             "value" : "设置车辆空调温度"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設置車輛空調溫度"
+          }
         }
       }
     },
     "Set percentage like charge limit" : {
-      "comment" : "设置充电等的百分比",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "设置充电百分比"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設置充電百分比"
           }
         }
       }
@@ -834,6 +1284,12 @@
             "state" : "translated",
             "value" : "设置温度"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設置溫度"
+          }
         }
       }
     },
@@ -844,6 +1300,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "开始"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開始"
           }
         }
       }
@@ -856,6 +1318,12 @@
             "state" : "translated",
             "value" : "开始网页认证"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開始網頁認證"
+          }
         }
       }
     },
@@ -866,6 +1334,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "结束"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "結束"
           }
         }
       }
@@ -878,6 +1352,12 @@
             "state" : "translated",
             "value" : "温度"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "溫度"
+          }
         }
       }
     },
@@ -889,6 +1369,12 @@
             "state" : "translated",
             "value" : "温度"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "溫度"
+          }
         }
       }
     },
@@ -898,6 +1384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "特斯拉账户服务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "特斯拉賬戶服務"
           }
         }
       }
@@ -910,6 +1402,12 @@
             "state" : "translated",
             "value" : "密钥已被移除"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密鑰已被移除"
+          }
         }
       }
     },
@@ -920,6 +1418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
           }
         }
       }
@@ -932,6 +1436,12 @@
             "state" : "translated",
             "value" : "开启"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啓"
+          }
         }
       }
     },
@@ -942,6 +1452,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "解锁"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解鎖"
           }
         }
       }
@@ -954,6 +1470,12 @@
             "state" : "translated",
             "value" : "车辆"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車輛"
+          }
         }
       }
     },
@@ -965,15 +1487,28 @@
             "state" : "translated",
             "value" : "通风"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通風"
+          }
         }
       }
     },
     "Wake up your vehicle" : {
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "唤醒你的车辆"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "喚醒你的車輛"
           }
         }
       }
@@ -986,6 +1521,12 @@
             "state" : "translated",
             "value" : "方向盘加热"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "方向盤加熱"
+          }
         }
       }
     },
@@ -996,6 +1537,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "方向盘加热"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "方向盤加熱"
           }
         }
       }
@@ -1008,6 +1555,12 @@
             "state" : "translated",
             "value" : "车窗"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車窗"
+          }
         }
       }
     },
@@ -1019,6 +1572,12 @@
             "state" : "translated",
             "value" : "车窗"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "車窗"
+          }
         }
       }
     },
@@ -1026,6 +1585,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "是的"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "是的"
