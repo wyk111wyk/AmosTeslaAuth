@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 
+#if os(iOS) || targetEnvironment(macCatalyst)
 public struct LoginView: View {
     @AppStorage("UserRegion") private var userRegion = "china"
     
@@ -402,3 +403,4 @@ extension LoginView {
     ) { _ in }
         .environment(\.locale, Locale(identifier: "zh_Hans"))
 })
+#endif
