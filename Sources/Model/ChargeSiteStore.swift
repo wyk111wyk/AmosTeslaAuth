@@ -12,10 +12,10 @@ struct ChargeSiteRoot: Codable {
 }
 
 public struct ChargeSiteStore: Codable {
-    let congestion_sync_time_utc_secs: Int64
-    let timestamp: Int64
-    let destination_charging: [NearbyCharger]
-    let superchargers: [NearbyCharger]
+    public let congestion_sync_time_utc_secs: Int64
+    public let timestamp: Int64
+    public let destination_charging: [NearbyCharger]
+    public let superchargers: [NearbyCharger]
 }
 
 extension ChargeSiteStore {
@@ -42,8 +42,8 @@ extension ChargeSiteStore {
 
 public struct NearbyCharger: Codable {
     public struct Location: Codable {
-        let lat: Double
-        let long: Double
+        public let lat: Double
+        public let long: Double
     }
     
     public let location: Location

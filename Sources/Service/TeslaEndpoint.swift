@@ -35,11 +35,11 @@ public enum UserRegion: String, Identifiable {
     case china, us, europe
     
     public var id: String { self.rawValue }
-    static var allCase: [Self] {
+    public static var allCase: [Self] {
         [.china, .us, .europe]
     }
     
-    var title: String {
+    public var title: String {
         switch self {
         case .china:
             return "China or HK"
@@ -50,7 +50,7 @@ public enum UserRegion: String, Identifiable {
         }
     }
     
-    var authUrl: String {
+    public var authUrl: String {
         switch self {
         case .china:
             return "https://auth.tesla.cn"
@@ -59,7 +59,7 @@ public enum UserRegion: String, Identifiable {
         }
     }
     
-    var baseUrl: String {
+    public var baseUrl: String {
         switch self {
         case .china:
             return "https://fleet-api.prd.cn.vn.cloud.tesla.cn"
@@ -235,7 +235,7 @@ extension Endpoint {
         }
     }
     
-    var method: HTTPMethod {
+    public var method: HTTPMethod {
         switch self {
         case .vehicles, .oAuth2revoke, .vehicleSummary, .mobileAccess, .allStates, .chargeState, .climateState, .driveState, .guiSettings, .vehicleState, .vehicleConfig, .location, .nearbyChargingSites, .oAuth2Authorization:
             return .get
@@ -244,7 +244,7 @@ extension Endpoint {
         }
     }
     
-    var parameter: [String: String]? {
+    public var parameter: [String: String]? {
         switch self {
         case .allStates(_):
             return ["endpoints": AllStatesEndpoints.allWithLocation.map({ $0.rawValue }).joined(separator: ";")]
@@ -325,7 +325,7 @@ extension Endpoint {
         }
     }
     
-    func urlString(_ userRegion: UserRegion) -> String {
+    public func urlString(_ userRegion: UserRegion) -> String {
         let url = self.baseURL(userRegion) + self.path
         debugPrint("\(method.rawValue): \(url)")
         return url

@@ -37,7 +37,7 @@ public struct VehicleState: Codable {
     public let tpms_rcp_rear_value: Double?
     
     public let odometer: Double // total miles
-    var sentry_mode: Bool // 哨兵模式
+    public var sentry_mode: Bool // 哨兵模式
     public let sentry_mode_available: Bool
     
     public let remote_start: Bool // 远程启动状态

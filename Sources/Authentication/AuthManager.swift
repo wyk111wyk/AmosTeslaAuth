@@ -8,15 +8,18 @@ import Alamofire
 public class AuthManager {
     @AppStorage("UserRegion") private var userRegion = "china"
     
-    @Binding var token: TokenModel
+    let token: TokenModel
+    public let updateCallback: (TokenModel) -> Void
     
     let helper = AuthHelper()
-    var userRegion_: UserRegion {
+    public var userRegion_: UserRegion {
         .init(rawValue: userRegion) ?? .china
     }
     
-    init(token: Binding<TokenModel>) {
-        self._token = token
+    public init(token: TokenModel,
+                updateCallback: @escaping (TokenModel) -> Void) {
+        self.token = token
+        self.updateCallback = updateCallback
     }
     
     /// 车辆认证的总入口
@@ -54,7 +57,8 @@ public class AuthManager {
     ) async throws -> HTTPHeaders {
         debugPrint("====> Step 03: 使用 Code 转换权鉴: \(code)")
         let bearer_token = try await authFromWebpage(
-            para: self.helper.bearerTokenParameter(code))
+            para: self.helper.bearerTokenParameter(code)
+        )
         let access_token = try await requestAccessToken(bearer_token)
         return access_token
     }
@@ -143,13 +147,14 @@ extension AuthManager {
                             else if let access_token = result.access_token,
                                     let refresh_token = result.refresh_token {
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
-                                self.token = self.token.update(
+                                let newToken = TokenModel(
                                     access_token: access_token,
                                     expires_TS: expiredDate.timeIntervalSince1970,
                                     refresh_token: refresh_token
                                 )
                                 debugPrint("成功获取 access token")
-                                debugPrint("过期时间：\(String(describing: result.expires_in))")
+//                                debugPrint("过期时间：\(String(describing: result.expires_in))")
+                                self.updateCallback(newToken)
                                 contionuation.resume(returning: access_token)
                             }else {
                                 contionuation.resume(throwing: TeslaError.authenticationFailed)
@@ -193,11 +198,12 @@ extension AuthManager {
                                 debugPrint("刷新 AccessToken 成功！")
                                 debugPrint("过期时间：\(String(describing: result.expires_in))")
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
-                                self.token = self.token.update(
+                                let newToken = TokenModel(
                                     access_token: access_token,
                                     expires_TS: expiredDate.timeIntervalSince1970,
                                     refresh_token: refresh_token
                                 )
+                                self.updateCallback(newToken)
                                 debugPrint("成功刷新获取新的 AccessToken")
                                 contionuation.resume(returning: access_token)
                             }else {

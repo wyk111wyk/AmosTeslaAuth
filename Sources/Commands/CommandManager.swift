@@ -18,9 +18,15 @@ public class CommandManager {
     public let authManager: AuthManager
     public var canceller: AnyCancellable?
     
-    public init(token: Binding<TokenModel>) {
+    public init(
+        token: TokenModel,
+        updateCallback: @escaping (TokenModel) -> Void
+    ) {
         self.canceller = nil
-        self.authManager = AuthManager(token: token)
+        self.authManager = AuthManager(
+            token: token,
+            updateCallback: updateCallback
+        )
     }
     
     public func requestToken(

@@ -7,6 +7,10 @@
 
 import Foundation
 
+public enum LoadingStateType: String {
+    case loading, loaded, failed, wakeup, mapLoading
+}
+
 public enum VehicleStateType: String {
     case online, offline, asleep, inService, loginRequired, noCar
     public var title: String {

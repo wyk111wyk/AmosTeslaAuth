@@ -15,7 +15,7 @@ public struct CommandInfo {
              yes = "Yes",
              no = "No"
         
-        func title() -> String {
+        public func title() -> String {
             switch self {
             case .alwaysAsk:
                 "Always ask".localized()
@@ -25,14 +25,16 @@ public struct CommandInfo {
                 "No".localized()
             }
         }
-        func convertToConfirm() -> Bool {
+        
+        public func convertToConfirm() -> Bool {
             if self == .yes {
                 return true
             }else {
                 return false
             }
         }
-        func imageName() -> String {
+        
+        public func imageName() -> String {
             switch self {
             case .yes:
                 return "icon_open"
@@ -42,7 +44,8 @@ public struct CommandInfo {
                 return "icon_unknow"
             }
         }
-        func subTitle() -> String? {
+        
+        public func subTitle() -> String? {
             switch self {
             case .alwaysAsk:
                 return nil
@@ -67,7 +70,7 @@ public struct CommandInfo {
         
         public var id: String { self.commandName() }
         
-        func commandName() -> String {
+        public func commandName() -> String {
             var tempName = ""
             switch self {
             case .remoteStart:
@@ -110,7 +113,7 @@ public struct CommandInfo {
             return tempName.localized()
         }
         
-        func imageName() -> String {
+        public func imageName() -> String {
             switch self {
             case .remoteStart:
                 return "icon_remoteStart"
@@ -175,7 +178,7 @@ public struct CommandInfo {
              setPercent(limit: Int),
              setTemps(temps: Double)
         
-        var value: String {
+        public var value: String {
             switch self {
             case .open:
                 return "Open".localized()
@@ -190,7 +193,7 @@ public struct CommandInfo {
             }
         }
         
-        func percent() -> Int {
+        public func percent() -> Int {
             switch self {
             case .setPercent(let limit):
                 return limit
@@ -199,7 +202,7 @@ public struct CommandInfo {
             }
         }
         
-        func title() -> String {
+        public func title() -> String {
             switch self {
             case .open:
                 return "Open".localized()
@@ -214,7 +217,7 @@ public struct CommandInfo {
             }
         }
         
-        func titleForDescribe(part: CommandInfo.ControlVehiclePart) -> String {
+        public func titleForDescribe(part: CommandInfo.ControlVehiclePart) -> String {
             switch self {
             case .open, .close:
                 return CommandInfo.genernateWay(part: part, way: self)
@@ -227,7 +230,7 @@ public struct CommandInfo {
             }
         }
         
-        func imageName() -> String {
+        public func imageName() -> String {
             switch self {
             case .open:
                 return "icon_open"
@@ -242,7 +245,7 @@ public struct CommandInfo {
             }
         }
         
-        func subTitle() -> String? {
+        public func subTitle() -> String? {
             switch self {
             case .alwaysAsk:
                 return nil
@@ -276,7 +279,7 @@ public struct CommandInfo {
             }
         }
         
-        func title() -> String {
+        public func title() -> String {
             switch self {
             case .fullCharge:
                 return "Full charge".localized()
@@ -289,7 +292,7 @@ public struct CommandInfo {
             }
         }
         
-        func subTitle() -> String {
+        public func subTitle() -> String {
             switch self {
             case .fullCharge:
                 return "100% - " + "Full charge".localized()
@@ -302,7 +305,7 @@ public struct CommandInfo {
             }
         }
         
-        func limit() -> Int {
+        public func limit() -> Int {
             switch self {
             case .fullCharge:
                 return 100
@@ -315,7 +318,7 @@ public struct CommandInfo {
             }
         }
         
-        func imageName() -> String {
+        public func imageName() -> String {
             switch self {
             case .fullCharge:
                 return "icon_100"

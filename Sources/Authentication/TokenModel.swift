@@ -11,7 +11,6 @@ import SwiftUI
 
 public struct TokenModel {
     public var id: UUID
-    public var cloudIdentifier: String
     
     public var access_token: String
     public var expires_TS: Double
@@ -19,13 +18,11 @@ public struct TokenModel {
     
     public init(
         id: UUID = UUID(),
-        cloudId: String,
         access_token: String? = nil,
         expires_TS: Double? = 0,
         refresh_token: String = ""
     ) {
         self.id = id
-        self.cloudIdentifier = cloudId
         if let access_token {
             self.access_token = access_token
         }else {
@@ -44,7 +41,7 @@ public struct TokenModel {
             identifier: cloudIdentifier,
             withCache: false
         ) else {
-            self = TokenModel(cloudId: cloudIdentifier)
+            self = TokenModel()
             return
         }
         
@@ -52,7 +49,7 @@ public struct TokenModel {
             idKey: "AmosTesla_Token",
             customKey: "TokenData"
         ) else {
-            self = TokenModel(cloudId: cloudIdentifier)
+            self = TokenModel()
             return
         }
         
@@ -68,19 +65,33 @@ public struct TokenModel {
         refresh_token.isEmpty
     }
     
-    /// 是否 Token 已过期
+    /// 是否 Token 已过期，过期的话清空已有 Token
     public func hasExpired() -> Bool {
         debugPrint("Token 过期的TS：\(expires_TS) \(Date(timeIntervalSince1970: expires_TS))")
         debugPrint("当前的TS：\(Date().timeIntervalSince1970)")
-        return expires_TS < Date().timeIntervalSince1970
+        let hasExpired = expires_TS < Date().timeIntervalSince1970
+        return hasExpired
+    }
+    
+    public func update(
+        newToken: TokenModel,
+        cloudIdentifier: String
+    ) -> TokenModel {
+        update(
+            access_token: newToken.access_token,
+            expires_TS: newToken.expires_TS,
+            refresh_token: newToken.refresh_token,
+            cloudIdentifier: cloudIdentifier
+        )
     }
     
     public func update(
         access_token: String,
         expires_TS: Double,
-        refresh_token: String
+        refresh_token: String,
+        cloudIdentifier: String
     ) -> TokenModel {
-        debugPrint("缓存新 Token 和过期时间：\(expires_TS)")
+        debugPrint("更新 Token 和过期时间：\(expires_TS)")
         var tempToken = self
         tempToken.access_token = access_token
         tempToken.expires_TS = expires_TS
@@ -89,11 +100,14 @@ public struct TokenModel {
         UserDefaults.standard.set(access_token, forKey: "access_token")
         UserDefaults.standard.set(expires_TS, forKey: "expires_TS")
         
-        Task { await self.saveToCloud(token: tempToken) }
+        Task { await self.saveToCloud(token: tempToken, cloudIdentifier: cloudIdentifier) }
         return tempToken
     }
     
-    private func saveToCloud(token: TokenModel) async {
+    private func saveToCloud(
+        token: TokenModel,
+        cloudIdentifier: String
+    ) async {
         guard let cloudHelper = SimpleCloudHelper(
             identifier: cloudIdentifier,
             withCache: false
@@ -130,7 +144,6 @@ extension TokenModel: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(UUID.self, forKey: .id)
-        self.cloudIdentifier = try container.decode(String.self, forKey: .cloudIdentifier)
         self.access_token = try container.decode(String.self, forKey: .access_token)
         self.expires_TS = try container.decode(Double.self, forKey: .expires_TS)
         self.refresh_token = try container.decode(String.self, forKey: .refresh_token)
@@ -139,7 +152,6 @@ extension TokenModel: Codable {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(cloudIdentifier, forKey: .cloudIdentifier)
         try container.encode(access_token, forKey: .access_token)
         try container.encode(expires_TS, forKey: .expires_TS)
         try container.encode(refresh_token, forKey: .refresh_token)

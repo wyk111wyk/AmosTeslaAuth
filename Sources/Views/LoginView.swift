@@ -12,7 +12,8 @@ import Foundation
 public struct LoginView: View {
     @AppStorage("UserRegion") private var userRegion = "china"
     
-    @Binding var token: TokenModel
+    @State private var token: TokenModel
+    public let updateCallback: (TokenModel) -> Void
     
     @State private var username: String = ""
     @State private var password: String = ""
@@ -35,18 +36,20 @@ public struct LoginView: View {
     public let loginAction: (LoginState) -> Void
     
     public init(
-        token: Binding<TokenModel>,
+        token: TokenModel,
         presentState: Binding<Bool>,
         isPushIn: Bool,
-        loginAction: @escaping (LoginState) -> Void
+        updateCallback: @escaping (TokenModel) -> Void,
+        loginAction: @escaping (LoginState) -> Void = {_ in}
     ) {
         if let key = KeyChainManager().fetch() {
             _username = State(wrappedValue: key.username)
             _password = State(wrappedValue: key.password)
         }
-        self._token = token
+        self.token = token
         self._presentState = presentState
         self.isPushIn = isPushIn
+        self.updateCallback = updateCallback
         self.loginAction = loginAction
     }
     
@@ -305,10 +308,10 @@ extension LoginView {
         ) {
             (result: Result<URL, Error>) in
             switch result {
-                case let .success(location):
+            case let .success(location):
                 loadingMsg = "Fetching token"
                 transferLocation(location.absoluteString)
-                case let .failure(error):
+            case let .failure(error):
                 finishLogin(.fail(error))
             }
         }
@@ -333,7 +336,11 @@ extension LoginView {
         if let code = location.parseLocationCode() {
             Task {
                 do {
-                    try await AuthManager(token: $token).transferToken(code)
+                    let auth = AuthManager(
+                        token: token,
+                        updateCallback: updateCallback
+                    )
+                    try await auth.transferToken(code)
                     finishLogin(.login)
                 }catch {
                     finishLogin(.fail(error))
@@ -393,14 +400,18 @@ extension LoginView {
 }
 
 @available(iOS 17.0, macOS 14, watchOS 10, *)
-#Preview("Login", body: {
-    @Previewable @State var token = TokenModel(cloudId: "iCloud.AKStudio.AmosFundation")
-    @Previewable @State var isPresent = false
-    LoginView(
-        token: $token,
-        presentState: $isPresent,
-        isPushIn: false
-    ) { _ in }
+#Preview(
+    "Login",
+    body: {
+        @Previewable @State var token = TokenModel()
+        @Previewable @State var isPresent = false
+        LoginView(
+            token: token,
+            presentState: $isPresent,
+            isPushIn: false,
+            updateCallback: {_ in},
+            loginAction: {_ in}
+        )
         .environment(\.locale, Locale(identifier: "zh_Hans"))
 })
 #endif
