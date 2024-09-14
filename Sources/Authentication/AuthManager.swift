@@ -20,19 +20,21 @@ public class AuthManager {
     }
     
     /// 车辆认证的总入口
-    public func requestToken(
-        isAllowRefresh: Bool
-    ) async throws -> HTTPHeaders? {
-        guard !token.isEmpty() else {
+    public func requestToken() async throws -> HTTPHeaders? {
+        // Token 为空，用户需要先登录
+        guard !token.isAccessEmpty() else {
             throw TeslaError.authenticationRequired
         }
         
+        // Token 已过期，需要进行刷新
         if token.hasExpired() {
-            guard isAllowRefresh else {
+            // 必须 refreshCode 不为空
+            // 本地不储存 refreshCode，仅存在 iCloud 服务器多设备的保证唯一性
+            guard !token.isRefreshEmpty() else {
                 return nil
             }
-            // Token已过期,需要进行刷新
-            // 只有最新的刷新令牌才有效
+            
+            // 只有最新的刷新令牌，且首次刷新才有效
             debugPrint("====> Token已过期,需要进行认证de刷新")
             let headers = try await refreshAccessToken(token.refresh_token)
             return headers
@@ -141,7 +143,7 @@ extension AuthManager {
                             else if let access_token = result.access_token,
                                     let refresh_token = result.refresh_token {
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
-                                self.token.update(
+                                self.token = self.token.update(
                                     access_token: access_token,
                                     expires_TS: expiredDate.timeIntervalSince1970,
                                     refresh_token: refresh_token
@@ -191,7 +193,7 @@ extension AuthManager {
                                 debugPrint("刷新 AccessToken 成功！")
                                 debugPrint("过期时间：\(String(describing: result.expires_in))")
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
-                                self.token.update(
+                                self.token = self.token.update(
                                     access_token: access_token,
                                     expires_TS: expiredDate.timeIntervalSince1970,
                                     refresh_token: refresh_token

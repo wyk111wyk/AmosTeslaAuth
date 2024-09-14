@@ -393,7 +393,7 @@ extension LoginView {
 
 @available(iOS 17.0, macOS 14, watchOS 10, *)
 #Preview("Login", body: {
-    @Previewable @State var token = TokenModel()
+    @Previewable @State var token = TokenModel(cloudId: "iCloud.AKStudio.AmosFundation")
     @Previewable @State var isPresent = false
     LoginView(
         token: $token,

@@ -18,20 +18,16 @@ public class CommandManager {
     public let authManager: AuthManager
     public var canceller: AnyCancellable?
     
-    let isAllowRefresh: Bool
-    // 第一次验证使用
-    public init(isAllowRefresh: Bool,
-                token: Binding<TokenModel>) {
+    public init(token: Binding<TokenModel>) {
         self.canceller = nil
-        self.isAllowRefresh = isAllowRefresh
         self.authManager = AuthManager(token: token)
     }
     
     public func requestToken(
         _ message: String
     ) async throws -> HTTPHeaders? {
-        mylog.info("获取权鉴的目的：\(message)")
-        return try await authManager.requestToken(isAllowRefresh: isAllowRefresh)
+        mylog.info("获取 Tesla Token 的目的：\(message)")
+        return try await authManager.requestToken()
     }
     
     /// 获取所有账号下的车辆

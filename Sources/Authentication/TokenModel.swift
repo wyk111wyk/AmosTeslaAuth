@@ -6,42 +6,142 @@
 //
 
 import Foundation
+import AmosBase
+import SwiftUI
 
-public struct TokenModel: Codable {
-
+public struct TokenModel {
+    public var id: UUID
+    public var cloudIdentifier: String
+    
     public var access_token: String
     public var expires_TS: Double
     public var refresh_token: String
     
-    init(
-        access_token: String = "",
-        expires_TS: Double = 0,
+    public init(
+        id: UUID = UUID(),
+        cloudId: String,
+        access_token: String? = nil,
+        expires_TS: Double? = 0,
         refresh_token: String = ""
     ) {
-        self.access_token = access_token
-        self.expires_TS = expires_TS
+        self.id = id
+        self.cloudIdentifier = cloudId
+        if let access_token {
+            self.access_token = access_token
+        }else {
+            self.access_token = UserDefaults.standard.string(forKey: "access_token") ?? ""
+        }
+        if let expires_TS {
+            self.expires_TS = expires_TS
+        }else {
+            self.expires_TS = UserDefaults.standard.double(forKey: "expires_TS")
+        }
         self.refresh_token = refresh_token
     }
     
-    func isEmpty() -> Bool {
-        access_token.isEmpty && refresh_token.isEmpty
+    public init(cloudIdentifier: String) async {
+        guard let cloudHelper = SimpleCloudHelper(
+            identifier: cloudIdentifier,
+            withCache: false
+        ) else {
+            self = TokenModel(cloudId: cloudIdentifier)
+            return
+        }
+        
+        guard let token: Self = try? await cloudHelper.fetchSingleCodable(
+            idKey: "AmosTesla_Token",
+            customKey: "TokenData"
+        ) else {
+            self = TokenModel(cloudId: cloudIdentifier)
+            return
+        }
+        
+        debugPrint("从 iCloud 初始化 TeslaToken")
+        self = token
+    }
+    
+    public func isAccessEmpty() -> Bool {
+        access_token.isEmpty
+    }
+    
+    public func isRefreshEmpty() -> Bool {
+        refresh_token.isEmpty
     }
     
     /// 是否 Token 已过期
-    func hasExpired() -> Bool {
-        debugPrint("Token 过期TS：\(expires_TS)")
-        debugPrint("当前 TS：\(Date().timeIntervalSince1970)")
+    public func hasExpired() -> Bool {
+        debugPrint("Token 过期的TS：\(expires_TS) \(Date(timeIntervalSince1970: expires_TS))")
+        debugPrint("当前的TS：\(Date().timeIntervalSince1970)")
         return expires_TS < Date().timeIntervalSince1970
     }
     
-    mutating func update(
+    public func update(
         access_token: String,
         expires_TS: Double,
         refresh_token: String
-    ) {
+    ) -> TokenModel {
         debugPrint("缓存新 Token 和过期时间：\(expires_TS)")
-        self.access_token = access_token
-        self.expires_TS = expires_TS
-        self.refresh_token = refresh_token
+        var tempToken = self
+        tempToken.access_token = access_token
+        tempToken.expires_TS = expires_TS
+        tempToken.refresh_token = refresh_token
+        
+        UserDefaults.standard.set(access_token, forKey: "access_token")
+        UserDefaults.standard.set(expires_TS, forKey: "expires_TS")
+        
+        Task { await self.saveToCloud(token: tempToken) }
+        return tempToken
+    }
+    
+    private func saveToCloud(token: TokenModel) async {
+        guard let cloudHelper = SimpleCloudHelper(
+            identifier: cloudIdentifier,
+            withCache: false
+        ) else {
+            return
+        }
+        
+        let idKey = "AmosTesla_Token"
+        let _ = try? await cloudHelper.deleteCloudValue(idKey: idKey)
+        
+        let tokenData = token.toData()
+        let savedRecord = try? await cloudHelper.saveDataToCloud(
+            dataType: .data(tokenData),
+            idKey: "AmosTesla_Token",
+            customKey: "TokenData"
+        )
+        
+        if let savedRecord {
+            debugPrint("成功储存 Token 到 iCloud 服务器: \(savedRecord.recordID)")
+        }
+    }
+}
+
+extension TokenModel: Codable {
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case cloudIdentifier
+        case access_token
+        case expires_TS
+        case refresh_token
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.cloudIdentifier = try container.decode(String.self, forKey: .cloudIdentifier)
+        self.access_token = try container.decode(String.self, forKey: .access_token)
+        self.expires_TS = try container.decode(Double.self, forKey: .expires_TS)
+        self.refresh_token = try container.decode(String.self, forKey: .refresh_token)
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(cloudIdentifier, forKey: .cloudIdentifier)
+        try container.encode(access_token, forKey: .access_token)
+        try container.encode(expires_TS, forKey: .expires_TS)
+        try container.encode(refresh_token, forKey: .refresh_token)
     }
 }
