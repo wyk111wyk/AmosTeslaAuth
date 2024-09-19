@@ -17,12 +17,13 @@ let package = Package(
             targets: ["AmosTeslaAuth"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.4.1"))
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.4.1")),
+        .package(url: "https://github.com/wyk111wyk/AmosBase.git", .upToNextMajor(from: "2.0.0"))
     ],
     targets: [
         .target(
             name: "AmosTeslaAuth",
-            dependencies: ["Alamofire"],
+            dependencies: ["Alamofire", "AmosBase"],
             path: "Sources",
             resources: [
                 .process("Resources"),

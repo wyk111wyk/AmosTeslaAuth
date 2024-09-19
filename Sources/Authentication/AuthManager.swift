@@ -16,8 +16,10 @@ public class AuthManager {
         .init(rawValue: userRegion) ?? .china
     }
     
-    public init(token: TokenModel,
-                updateCallback: @escaping (TokenModel) -> Void) {
+    public init(
+        token: TokenModel,
+        updateCallback: @escaping (TokenModel) -> Void
+    ) {
         self.token = token
         self.updateCallback = updateCallback
     }
@@ -119,10 +121,12 @@ extension AuthManager {
             {
                 contionuation in
                 let endpoint = Endpoint.oAuth2Token
-                AF.request(endpoint.urlString(userRegion_),
-                           method: endpoint.method,
-                           parameters: para,
-                           encoder: JSONParameterEncoder.default)
+                AF.request(
+                    endpoint.urlString(userRegion_),
+                    method: endpoint.method,
+                    parameters: para,
+                    encoder: JSONParameterEncoder.default
+                )
                 .responseDecodable(of: TokenState.self)
                 { response in
                     var debugString = "Step03 Status Code: \(response.response!.statusCode)"
@@ -142,7 +146,9 @@ extension AuthManager {
                         case .success(let result):
                             if let error = result.error,
                                let msg = result.error_description {
-                                contionuation.resume(throwing: TeslaError.customError(msg: msg.isEmpty ? error : msg))
+                                contionuation.resume(
+                                    throwing: TeslaError.customError(msg: msg.isEmpty ? error : msg)
+                                )
                             }
                             else if let access_token = result.access_token,
                                     let refresh_token = result.refresh_token {
