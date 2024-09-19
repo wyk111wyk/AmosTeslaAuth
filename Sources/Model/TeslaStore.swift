@@ -7,8 +7,8 @@
 
 import Foundation
 
-public enum LoadingStateType: String {
-    case loading, loaded, failed, wakeup, mapLoading
+public enum VehicleLoadingState: String {
+    case loading, loaded, failed, wakeup
 }
 
 public enum VehicleStateType: String {
