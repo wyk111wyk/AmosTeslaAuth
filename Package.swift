@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.4.1")),
-        .package(url: "https://github.com/wyk111wyk/AmosBase.git", .upToNextMajor(from: "2.0.0"))
+        .package(url: "https://github.com/wyk111wyk/AmosBase.git", .upToNextMajor(from: "1.0.0"))
     ],
     targets: [
         .target(
