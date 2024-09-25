@@ -198,7 +198,11 @@ extension AuthManager {
                         case .success(let result):
                             if let error = result.error {
                                 debugPrint("====> Request refresh_token error: \(error)")
-                                contionuation.resume(throwing: TeslaError.customError(msg: error))
+                                if error == "login_required" {
+                                    contionuation.resume(throwing: TeslaError.authenticationRequired)
+                                }else {
+                                    contionuation.resume(throwing: TeslaError.customError(msg: error))
+                                }
                             }else if let access_token = result.access_token,
                                      let refresh_token = result.refresh_token {
                                 debugPrint("刷新 AccessToken 成功！")
