@@ -7,8 +7,23 @@
 
 import Foundation
 
-public enum VehicleLoadingState: String {
-    case loading, loaded, failed, wakeup
+public enum VehicleLoadingState: Equatable {
+    case loading, loaded, failed(Error), wakeup
+    
+    public static func == (a: VehicleLoadingState, b: VehicleLoadingState) -> Bool {
+        switch (a, b) {
+        case (.loading, .loading):
+            return true
+        case (.loaded, .loaded):
+            return true
+        case (.failed, .failed):
+            return true
+        case (.wakeup, .wakeup):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 public enum VehicleStateType: String {

@@ -27,7 +27,7 @@ public enum TeslaError: Error, Equatable, LocalizedError {
         var errorMsg = ""
         switch self {
         case .accountOrPasswordWrong:
-            errorMsg = "AccountWrongError"
+            errorMsg = "Account Wrong Error"
         case .networkError(error: let error):
             errorMsg = "Network error: \(error.localizedDescription)"
         case .authenticationFailed:
@@ -56,6 +56,6 @@ public enum TeslaError: Error, Equatable, LocalizedError {
             errorMsg = msg
         }
         
-        return errorMsg.localized()
+        return errorMsg
     }
 }
