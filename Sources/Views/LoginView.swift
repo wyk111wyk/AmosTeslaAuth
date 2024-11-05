@@ -7,13 +7,14 @@
 
 import SwiftUI
 import Foundation
+import AmosBase
 
 #if os(iOS) || targetEnvironment(macCatalyst)
 public struct LoginView: View {
-    @AppStorage("UserRegion") private var userRegion = "china"
-    
-    @State private var token: TokenModel
-    public let updateCallback: (TokenModel) -> Void
+    @SimpleSetting(.userRegion) var userRegion
+    @SimpleSetting(.access_token) var access_token
+    @SimpleSetting(.refresh_token) var refresh_token
+    @SimpleSetting(.expires_TS) var expires_TS
     
     @State private var username: String = ""
     @State private var password: String = ""
@@ -31,25 +32,21 @@ public struct LoginView: View {
     public let isPushIn: Bool
     
     public enum LoginState {
-        case login, demo, fail(Error)
+        case login, demo
     }
     public let loginAction: (LoginState) -> Void
     
     public init(
-        token: TokenModel,
         presentState: Binding<Bool>,
         isPushIn: Bool,
-        updateCallback: @escaping (TokenModel) -> Void,
         loginAction: @escaping (LoginState) -> Void = {_ in}
     ) {
         if let key = KeyChainManager().fetch() {
             _username = State(wrappedValue: key.username)
             _password = State(wrappedValue: key.password)
         }
-        self.token = token
         self._presentState = presentState
         self.isPushIn = isPushIn
-        self.updateCallback = updateCallback
         self.loginAction = loginAction
     }
     
@@ -293,17 +290,20 @@ extension LoginView {
         case .demo:
             loginAction(state)
             self.presentState = false
-        case .fail(let error):
-            debugPrint("通过网页验证失败: \(error.localizedDescription)")
-            failError = TeslaError.customError(msg: error.localizedDescription)
         }
+    }
+    
+    @MainActor
+    private func showError(_ error: Error) {
+        debugPrint("通过网页验证失败: \(error.localizedDescription)")
+        failError = TeslaError.customError(msg: error.localizedDescription)
     }
     
     // 通过网页进行认证
     #if os(iOS)
     private func authWebPage() -> some View {
         AuthWebView(
-            userRegion: UserRegion(rawValue: userRegion) ?? .china,
+            userRegion: userRegion,
             presentState: $showLoginWebView
         ) {
             (result: Result<URL, Error>) in
@@ -312,7 +312,7 @@ extension LoginView {
                 loadingMsg = "Fetching token"
                 transferLocation(location.absoluteString)
             case let .failure(error):
-                finishLogin(.fail(error))
+                showError(error)
             }
         }
         .overlay(alignment: .topLeading) {
@@ -336,14 +336,10 @@ extension LoginView {
         if let code = location.parseLocationCode() {
             Task {
                 do {
-                    let auth = AuthManager(
-                        token: token,
-                        updateCallback: updateCallback
-                    )
-                    try await auth.transferToken(code)
+                    try await AuthManager(){}.transferToken(code)
                     finishLogin(.login)
                 }catch {
-                    finishLogin(.fail(error))
+                    showError(error)
                 }
             }
         }
@@ -406,10 +402,8 @@ extension LoginView {
         @Previewable @State var token = TokenModel()
         @Previewable @State var isPresent = false
         LoginView(
-            token: token,
             presentState: $isPresent,
             isPushIn: false,
-            updateCallback: {_ in},
             loginAction: {_ in}
         )
         .environment(\.locale, Locale(identifier: "zh_Hans"))

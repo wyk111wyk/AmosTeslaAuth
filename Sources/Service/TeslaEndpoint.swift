@@ -8,6 +8,8 @@
 import Foundation
 import Alamofire
 import CoreLocation
+import AmosBase
+
 /*
  https://developer.tesla.cn/docs/fleet-api?shell#overview
  Tesla Fleet API 使用限制
@@ -31,7 +33,7 @@ public enum AllStatesEndpoints: String {
     public static var allWithLocation: [AllStatesEndpoints] = [.chargeState, .climateState, .closuresState, .locationData, .guiSettings, .vehicleConfig, .vehicleState]
 }
 
-public enum UserRegion: String, Identifiable {
+public enum UserRegion: String, Identifiable, Codable, SimpleDefaults.Serializable {
     case china, us, europe
     
     public var id: String { self.rawValue }

@@ -10,23 +10,25 @@ import Alamofire
 import OSLog
 import Combine
 import SwiftUI
+import AmosBase
 
 private let mylog = Logger(subsystem: "CommandManager", category: "Command")
 public class CommandManager {
-    @AppStorage("UserRegion") private var userRegion = "china"
-    public var userRegion_: UserRegion { .init(rawValue: userRegion) ?? .china }
+    @SimpleSetting(.userRegion) var userRegion
+    @SimpleSetting(.access_token) var access_token
+    @SimpleSetting(.refresh_token) var refresh_token
+    @SimpleSetting(.expires_TS) var expires_TS
+    
     public let authManager: AuthManager
     public var canceller: AnyCancellable?
+    public let updateCallback: () -> Void
     
     public init(
-        token: TokenModel,
-        updateCallback: @escaping (TokenModel) -> Void
+        updateCallback: @escaping () -> Void = {}
     ) {
         self.canceller = nil
-        self.authManager = AuthManager(
-            token: token,
-            updateCallback: updateCallback
-        )
+        self.updateCallback = updateCallback
+        self.authManager = AuthManager(updateCallback: updateCallback)
     }
     
     public func requestToken(
@@ -43,7 +45,7 @@ public class CommandManager {
         }
         return try await withCheckedThrowingContinuation({ contionuation in
             let endpoint = Endpoint.vehicles
-            AF.request(endpoint.urlString(userRegion_),
+            AF.request(endpoint.urlString(userRegion),
                        method: endpoint.method,
                        headers: headers)
             .responseDecodable(of: VehiclesRoot.self) { response in
@@ -77,7 +79,7 @@ public class CommandManager {
         }
         let endpoint = Endpoint.allStates(vehicleID: vehicle_id)
         return try await withCheckedThrowingContinuation { continuation in
-            AF.request(endpoint.urlString(userRegion_),
+            AF.request(endpoint.urlString(userRegion),
                        method: endpoint.method,
                        parameters: endpoint.parameter,
                        headers: headers)
@@ -116,7 +118,7 @@ public class CommandManager {
         }
         let endpoint = Endpoint.location(vehicleID: vehicle_id)
         return try await withCheckedThrowingContinuation { continuation in
-            AF.request(endpoint.urlString(userRegion_),
+            AF.request(endpoint.urlString(userRegion),
                        method: endpoint.method,
                        headers: headers)
             .responseDecodable(of: DriveRoot.self) { response in
@@ -150,7 +152,7 @@ extension CommandManager {
             detail: true
         )
         return try await withCheckedThrowingContinuation { continuation in
-            AF.request(endpoint.urlString(userRegion_),
+            AF.request(endpoint.urlString(userRegion),
                        method: endpoint.method,
                        headers: headers)
                 .responseDecodable(of: ChargeSiteRoot.self) { response in
@@ -205,7 +207,7 @@ extension CommandManager {
                     Task {
                         debugPrint("进行唤醒车辆的尝试:\(Date())")
                         let endpoint = Endpoint.wakeUp(vehicleID: vehicle_id)
-                        let response = await AF.request(endpoint.urlString(self.userRegion_),
+                        let response = await AF.request(endpoint.urlString(self.userRegion),
                                                         method: endpoint.method,
                                                         headers: headers)
                             .serializingDecodable(WakeupRoot.self)
@@ -308,7 +310,7 @@ extension CommandManager {
             return false
         }
         return try await withCheckedThrowingContinuation { continuation in
-            AF.request(endpoint.urlString(userRegion_),
+            AF.request(endpoint.urlString(userRegion),
                        method: endpoint.method,
                        parameters: endpoint.parameter,
                        encoder: JSONParameterEncoder.default,

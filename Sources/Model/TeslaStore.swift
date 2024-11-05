@@ -24,6 +24,19 @@ public enum VehicleLoadingState: Equatable {
             return false
         }
     }
+    
+    public var title: String {
+        switch self {
+        case .loading:
+            "载入中"
+        case .loaded:
+            "已载入"
+        case .failed(_):
+            "载入失败"
+        case .wakeup:
+            "唤醒中"
+        }
+    }
 }
 
 public enum VehicleStateType: String {

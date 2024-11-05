@@ -7,9 +7,9 @@ let package = Package(
     name: "AmosTeslaAuth",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v16),
-        .macOS(.v13),
-        .watchOS(.v9)
+        .iOS(.v17),
+        .macOS(.v14),
+        .watchOS(.v10)
     ],
     products: [
         .library(
@@ -17,8 +17,8 @@ let package = Package(
             targets: ["AmosTeslaAuth"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.4.1")),
-        .package(url: "https://github.com/wyk111wyk/AmosBase.git", .upToNextMajor(from: "1.0.0"))
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.0")),
+        .package(url: "https://github.com/wyk111wyk/AmosBase.git", .upToNextMajor(from: "1.6.0"))
     ],
     targets: [
         .target(

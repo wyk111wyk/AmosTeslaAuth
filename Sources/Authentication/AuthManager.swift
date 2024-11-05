@@ -4,49 +4,51 @@
 import Foundation
 import SwiftUI
 import Alamofire
+import AmosBase
 
 public class AuthManager {
-    @AppStorage("UserRegion") private var userRegion = "china"
     
-    let token: TokenModel
-    public let updateCallback: (TokenModel) -> Void
+    @SimpleSetting(.userRegion) var userRegion
+    @SimpleSetting(.access_token) var access_token
+    @SimpleSetting(.refresh_token) var refresh_token
+    @SimpleSetting(.expires_TS) var expires_TS
+    
+    public let updateCallback: () -> Void
     
     let helper = AuthHelper()
-    public var userRegion_: UserRegion {
-        .init(rawValue: userRegion) ?? .china
-    }
     
     public init(
-        token: TokenModel,
-        updateCallback: @escaping (TokenModel) -> Void
+        updateCallback: @escaping () -> Void
     ) {
-        self.token = token
         self.updateCallback = updateCallback
     }
     
     /// 车辆认证的总入口
     public func requestToken() async throws -> HTTPHeaders? {
         // Token 为空，用户需要先登录
-        guard !token.isAccessEmpty() else {
+        guard access_token.isNotEmpty else {
             throw TeslaError.authenticationRequired
         }
         
         // Token 已过期，需要进行刷新
-        if token.hasExpired() {
+        if expires_TS.hasExpired() {
+            #if os(watchOS)
+            throw TeslaError.authenticationRequired
+            #else
             // 必须 refreshCode 不为空
             // 本地不储存 refreshCode，仅存在 iCloud 服务器多设备的保证唯一性
-            guard !token.isRefreshEmpty() else {
+            guard refresh_token.isNotEmpty else {
                 return nil
             }
-            
             // 只有最新的刷新令牌，且首次刷新才有效
             debugPrint("====> Token已过期,需要进行认证de刷新")
-            let headers = try await refreshAccessToken(token.refresh_token)
+            let headers = try await refreshAccessToken()
             return headers
+            #endif
         }else {
             debugPrint("====> 权鉴仍然有效 直接使用认证信息")
             let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(token.access_token)"
+                "Authorization": "Bearer \(access_token)"
             ]
             return headers
         }
@@ -81,20 +83,16 @@ public class AuthManager {
 extension AuthManager {
     /// 刷新 Token
     @discardableResult
-    public func refreshToken(
-        _ refreshToken: String
-    ) async throws -> HTTPHeaders {
-        let headers = try await refreshAccessToken(refreshToken)
+    public func refreshToken() async throws -> HTTPHeaders {
+        let headers = try await refreshAccessToken()
         return headers
     }
     
-    func refreshAccessToken(
-        _ refreshToken: String
-    ) async throws -> HTTPHeaders {
-        debugPrint("====> Start Refresh Token: \(refreshToken)")
+    func refreshAccessToken() async throws -> HTTPHeaders {
+        debugPrint("====> Start Refresh Token: \(refresh_token)")
         do {
             let bearer_token = try await self.requestRefresh(
-                para: self.helper.refreshParameter(refreshToken))
+                para: self.helper.refreshParameter(refresh_token))
             debugPrint("----------Step 05: Refresh Token Done-----------")
             let result = try await self.requestAccessToken(bearer_token)
             return result
@@ -122,7 +120,7 @@ extension AuthManager {
                 contionuation in
                 let endpoint = Endpoint.oAuth2Token
                 AF.request(
-                    endpoint.urlString(userRegion_),
+                    endpoint.urlString(userRegion),
                     method: endpoint.method,
                     parameters: para,
                     encoder: JSONParameterEncoder.default
@@ -130,7 +128,7 @@ extension AuthManager {
                 .responseDecodable(of: TokenState.self)
                 { response in
                     var debugString = "Step03 Status Code: \(response.response!.statusCode)"
-                    debugString += "\nREQUEST: \(endpoint.urlString(self.userRegion_))"
+                    debugString += "\nREQUEST: \(endpoint.urlString(SimpleDefaults[.userRegion]))"
                     debugString += "\nREQUEST PARA: \(para.print())"
                     debugPrint("\(debugString)")
                     
@@ -153,14 +151,15 @@ extension AuthManager {
                             else if let access_token = result.access_token,
                                     let refresh_token = result.refresh_token {
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
-                                let newToken = TokenModel(
-                                    access_token: access_token,
-                                    expires_TS: expiredDate.timeIntervalSince1970,
-                                    refresh_token: refresh_token
-                                )
+                                SimpleDefaults[.access_token] = access_token
+                                SimpleDefaults[.refresh_token] = refresh_token
+                                SimpleDefaults[.expires_TS] = expiredDate.timeIntervalSince1970
+                                
                                 debugPrint("成功获取 access token")
 //                                debugPrint("过期时间：\(String(describing: result.expires_in))")
-                                self.updateCallback(newToken)
+                                Task { @MainActor in
+                                    self.updateCallback()
+                                }
                                 contionuation.resume(returning: access_token)
                             }else {
                                 contionuation.resume(throwing: TeslaError.authenticationFailed)
@@ -182,7 +181,7 @@ extension AuthManager {
     ) async throws -> String {
         return try await withCheckedThrowingContinuation({ contionuation in
             let endpoint = Endpoint.oAuth2Token
-            AF.request(endpoint.urlString(userRegion_),
+            AF.request(endpoint.urlString(userRegion),
                        method: endpoint.method,
                        parameters: para,
                        encoder: URLEncodedFormParameterEncoder.default)
@@ -208,13 +207,14 @@ extension AuthManager {
                                 debugPrint("刷新 AccessToken 成功！")
                                 debugPrint("过期时间：\(String(describing: result.expires_in))")
                                 let expiredDate = Date().addingTimeInterval(result.expires_in ?? 28800)
-                                let newToken = TokenModel(
-                                    access_token: access_token,
-                                    expires_TS: expiredDate.timeIntervalSince1970,
-                                    refresh_token: refresh_token
-                                )
-                                self.updateCallback(newToken)
+                                SimpleDefaults[.access_token] = access_token
+                                SimpleDefaults[.refresh_token] = refresh_token
+                                SimpleDefaults[.expires_TS] = expiredDate.timeIntervalSince1970
+                                
                                 debugPrint("成功刷新获取新的 AccessToken")
+                                Task { @MainActor in
+                                    self.updateCallback()
+                                }
                                 contionuation.resume(returning: access_token)
                             }else {
                                 contionuation.resume(throwing: TeslaError.authenticationFailed)

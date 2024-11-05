@@ -69,7 +69,7 @@ public struct TokenModel {
     public func hasExpired() -> Bool {
         debugPrint("Token 过期的TS：\(expires_TS) \(Date(timeIntervalSince1970: expires_TS))")
         debugPrint("当前的TS：\(Date().timeIntervalSince1970)")
-        let hasExpired = expires_TS < Date().timeIntervalSince1970
+        let hasExpired = expires_TS < Date().timeIntervalSince1970 || expires_TS == 0
         return hasExpired
     }
     
